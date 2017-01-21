@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Multiple Spinning Triangles</title>
+
+  <script src="//cdn.jsdelivr.net/phaser/2.5.0/phaser.min.js"></script>
+    <style type="text/css">
+
+        body {
+          margin: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+  <div class="graphics-container">
+
+  </div>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'graphics-container', { create: create, update: update });
+
+var triangle;
+var trianglegraphics;
+
+var coord;
+var centerX;
+var centerY;
+var originaldistance = 1200;
+var distance = originaldistance;
+var numOfTriangles = 20;
+
+var trianglelist = [];
+var distances = [];
+
+function create() {
+
+    trianglegraphics = game.add.graphics(0, 0);
+
+    // Define the triangle vertices
+    // 100^2 + x^2 = 200^2 --> x = 173,205...
+    coord = [new Phaser.Point(300, 200+173), new Phaser.Point(500, 200+173), new Phaser.Point(400, 200)];
+
+    for(var i = 0; i < numOfTriangles; i++){
+      //trianglelist[i+1] = triangle.clone();
+      trianglelist[i] = new Phaser.Polygon(coord);
+      distances[i] = originaldistance - (i * (originaldistance/numOfTriangles));
+    }
+
+    // Calculate (roughly) the center of the triangle
+    centerX = (coord[0].x + coord[1].x + coord[2].x) / 3;
+    centerY = (coord[0].y + coord[1].y + coord[2].y) / 3;
+
+  }
+
+  function update(){
+
+    trianglegraphics.clear();
+
+    for(var j = 0; j < trianglelist.length; j++){
+
+      for(var i = 0; i < trianglelist[j].points.length; i++){
+
+        trianglelist[j].points[i].rotate(centerX, centerY, 1, true, distances[j]);
+      }
+    }
+
+    for(var k = 0; k < trianglelist.length; k++){
+
+      if(k % 2 == 0){
+        trianglegraphics.beginFill(0xffffff);
+      }
+      else {
+        trianglegraphics.beginFill(0x188677);
+      }
+
+      trianglegraphics.drawPolygon(trianglelist[k].points);
+      trianglegraphics.endFill();
+    }
+
+  }
+
+</script>
+
+</body>
+</html>
