@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Spinning &amp; Shrinking Triangle </title>
+
+  <script src="//cdn.jsdelivr.net/phaser/2.5.0/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
+
+var triangle;
+var trianglegraphics;
+
+var coord;
+var centerX;
+var centerY;
+var distance = 300;
+
+function create() {
+
+    trianglegraphics = game.add.graphics(0, 0);
+
+    // Define the triangle vertices
+    // 100^2 + x^2 = 200^2 --> x = 173,205...
+    coord = [new Phaser.Point(300, 200+173), new Phaser.Point(500, 200+173), new Phaser.Point(400, 200)];
+
+    triangle = new Phaser.Polygon(coord);
+
+    // Calculate (roughly) the center of the triangle
+    centerX = (coord[0].x + coord[1].x + coord[2].x) / 3;
+    centerY = (coord[0].y + coord[1].y + coord[2].y) / 3;
+
+  }
+
+  function update(){
+
+    trianglegraphics.clear();
+
+    if(distance > 0){
+      distance = distance - 1.5;
+    }
+    if(distance <= 0){
+      distance = 300;
+    }
+
+    for(var i = 0; i < 3; i++){
+      coord[i].rotate(centerX, centerY, 1, true, distance);
+    }
+
+    triangle.setTo(coord[0], coord[1], coord[2]);
+
+    trianglegraphics.beginFill(0x6666ff);
+    trianglegraphics.drawPolygon(triangle.points);
+    trianglegraphics.endFill();
+
+  }
+
+
+</script>
+
+</body>
+</html>
