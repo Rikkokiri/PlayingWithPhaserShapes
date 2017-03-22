@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Fuck You</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Leckerli+One" rel="stylesheet">
+
+  <script src="phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
+
+var coord;
+var gCenterX = game.width / 2;
+var gCenterY = game.height / 2;
+var distance = 300;
+
+var text;
+var fontsize = 0;
+var growing = true;
+
+function create() {
+
+
+  text = game.add.text(50, game.world.centerY, "Fuck You");
+
+  // text.font = 'Arial Black';
+  text.font = 'Leckerli One';
+  text.fontSize = 1;
+  text.fontWeight = 'bold';
+  text.fill = '#ec008c';
+
+  text.y = gCenterY - text.height / 2;
+  text.x = gCenterX - text.width / 2;
+
+}
+
+function update(){
+
+  if(growing) {
+    text.fontSize++;
+    console.log("Font size is " + text.fontSize);
+    centerText(text);
+
+    if(text.fontSize > 130) {
+      growing = false;
+    }
+  }
+
+  if(!growing) {
+    text.fontSize--;
+    console.log("Font size" + text.fontSize);
+    centerText(text);
+
+    if(text.fontSize <= 1){
+      growing = true;
+    }
+  }
+
+}
+
+/* Method for centering the given text element */
+function centerText(toBeCentered){
+  toBeCentered.y = gCenterY - toBeCentered.height / 2;
+  toBeCentered.x = gCenterX - toBeCentered.width / 2;
+}
+
+
+</script>
+
+</body>
+</html>
