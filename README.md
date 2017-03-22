@@ -1,5 +1,7 @@
 # PlayingWithPhaserShapes
 
+<br/>
+
 <h2>Animated Shapes</h2>
 <ul>
   <li>
@@ -9,6 +11,8 @@
     <a href="https://rikkokiri.github.io/PlayingWithPhaserShapes/MultipleSpinningTriangles.html">Multiple nested spinning triangles</a>
   </li>
 </ul>
+
+<br/>
 
 <h2>Animated Text</h2>
 <ul>
