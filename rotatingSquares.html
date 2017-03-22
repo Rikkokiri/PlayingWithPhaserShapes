@@ -20,9 +20,6 @@
 
 var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
 
-var centerX;
-var centerY;
-
 var squareSize;
 var numberOfSquares;
 var squareList;
@@ -34,37 +31,61 @@ var cornerDistance;
 function create() {
 
   // Call function squareSetUp() in order to create the squares
-
+  squareSetUp();
 
 }
 
 function update(){
 
+  spinSquares();
+
+}
+
+/*
+ * Animate the squares spinning
+ */
+function spinSquares() {
+
   squaregraphics.clear();
 
-  for(var i = 0; i < 4; i++){
-    coord[i].rotate(centerX, centerY, 1, true, cornerDistance);
+  // First rotate points for all squares
+  for(var index = 0; index < squareList.length; index++){
+
+    var square = squareList[index].square;
+    var c = squareList[index].center;
+
+    // Iterate over the points of each square
+    for(var point = 0; point < 4; point++){
+      square.points[point].rotate(c.x, c.y, 1, true, cornerDistance);
+    }
   }
 
-  square.setTo(coord);
+  // Draw squares
+  for(var index = 0; index < squareList.length; index++){
 
-  squaregraphics.beginFill(0xffffff);
-  squaregraphics.drawPolygon(square.points);
-  squaregraphics.endFill();
+    var shape = squareList[index];
+
+    squaregraphics.beginFill(0xffffff);
+    squaregraphics.drawPolygon(shape.square);
+    squaregraphics.endFill();
+
+  }
 
 }
 
 /*
  * Create squares
  */
-function squareSetUp () {
+function squareSetUp() {
+
+  squaregraphics = game.add.graphics(0, 0);
 
   squareSize = game.height / 6;
   numberOfSquares = (game.width / squareSize) * 3; // (* 6) / 2 -> 3
 
   // Calculate the distance from the corner of the square to the center point of the square
   // Standard Pythagoras
-  cornerDistance = Math.sqrt(2 * Math.pow(squareSize, 2));
+  cornerDistance = Math.sqrt(2 * Math.pow((squareSize/2), 2));
 
   squareList = [];
 
@@ -77,11 +98,10 @@ function squareSetUp () {
 
     // Rows starting with an empty space
     for(var x = squareSize; x <= game.width; x += 2 * squareSize){ // rows
-      squareList.push(createSquare(x, y));
+      squareList.push(createSquare(x, y + squareSize));
     }
 
     // Could return the list... //TODO REMOVE?
-    
   }
 
   /*
@@ -89,9 +109,19 @@ function squareSetUp () {
    */
   function createSquare (x, y) {
 
-    //The square needs to know it's center point so it can rotate around it
-    var coord = [x, y, ]
+    var coord =
+      [x, y, // Top left corner
+      x + squareSize, y, // top right corner
+      x + squareSize, y + squareSize, // bottom right corner
+      x, y + squareSize]; // bottom left corner
 
+    //The square needs to know it's center point so it can rotate around it
+    var centerX = x + (squareSize / 2);
+    var centerY = y + (squareSize / 2);
+
+    // var newSquare = new Phaser.Polygon(coord); TODO REMOVE
+
+    return {square: new Phaser.Polygon(coord), center: new Phaser.Point(centerX, centerY)};
   }
 
 }
