@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Rotating square</title>
+
+  <script src="phaser.min.js"></script>
+
+  <style type="text/css">
+
+    body {
+      margin: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
+
+var centerX;
+var centerY;
+
+var squareSize;
+var numberOfSquares;
+var squareList;
+
+var coord;
+var squaregraphics;
+var cornerDistance;
+
+function create() {
+
+  // Call function squareSetUp() in order to create the squares
+
+
+}
+
+function update(){
+
+  squaregraphics.clear();
+
+  for(var i = 0; i < 4; i++){
+    coord[i].rotate(centerX, centerY, 1, true, cornerDistance);
+  }
+
+  square.setTo(coord);
+
+  squaregraphics.beginFill(0xffffff);
+  squaregraphics.drawPolygon(square.points);
+  squaregraphics.endFill();
+
+}
+
+/*
+ * Create squares
+ */
+function squareSetUp () {
+
+  squareSize = game.height / 6;
+  numberOfSquares = (game.width / squareSize) * 3; // (* 6) / 2 -> 3
+
+  // Calculate the distance from the corner of the square to the center point of the square
+  // Standard Pythagoras
+  cornerDistance = Math.sqrt(2 * Math.pow(squareSize, 2));
+
+  squareList = [];
+
+  for(var y = 0; y <= game.height; y += 2 * squareSize){ // columns
+
+    // Rows starting with a square
+    for(var x = 0; x <= game.width; x += 2 * squareSize){ // rows
+      squareList.push(createSquare(x, y));
+    }
+
+    // Rows starting with an empty space
+    for(var x = squareSize; x <= game.width; x += 2 * squareSize){ // rows
+      squareList.push(createSquare(x, y));
+    }
+
+    // Could return the list... //TODO REMOVE?
+    
+  }
+
+  /*
+   *
+   */
+  function createSquare (x, y) {
+
+    //The square needs to know it's center point so it can rotate around it
+    var coord = [x, y, ]
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
