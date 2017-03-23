@@ -22,6 +22,7 @@ var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: 
 
 var squareSize;
 var numberOfSquares;
+var squaresOnRow;
 var squareList;
 
 var coord;
@@ -33,18 +34,20 @@ function create() {
   // Call function squareSetUp() in order to create the squares
   squareSetUp();
 
+  console.log("Number of squares created: " + squareList.length); // --> 36 when should be 24
+
 }
 
 function update(){
 
-  spinSquares();
+  spinSquaresSameDirection();
 
 }
 
 /*
  * Animate the squares spinning
  */
-function spinSquares() {
+function spinSquaresSameDirection() {
 
   squaregraphics.clear();
 
@@ -52,11 +55,11 @@ function spinSquares() {
   for(var index = 0; index < squareList.length; index++){
 
     var square = squareList[index].square;
-    var c = squareList[index].center;
+    var center = squareList[index].center;
 
     // Iterate over the points of each square
     for(var point = 0; point < 4; point++){
-      square.points[point].rotate(c.x, c.y, 1, true, cornerDistance);
+      square.points[point].rotate(center.x, center.y, 0.75, true, cornerDistance);
     }
   }
 
@@ -70,8 +73,41 @@ function spinSquares() {
     squaregraphics.endFill();
 
   }
-
 }
+
+/*
+ * Animate the squares spinning
+ */
+function spinSquaresTwoDirections() {
+
+  squaregraphics.clear();
+
+  // First rotate points for all squares
+  for(var index = 0; index < squareList.length; index++){
+
+    var square = squareList[index].square;
+    var c = squareList[index].center;
+
+    var angle;
+
+    // Iterate over the points of each square
+    for(var point = 0; point < 4; point++){
+      square.points[point].rotate(c.x, c.y, angle, true, cornerDistance);
+    }
+  }
+
+  // Draw squares
+  for(var index = 0; index < squareList.length; index++){
+
+    var shape = squareList[index];
+
+    squaregraphics.beginFill(0xffffff);
+    squaregraphics.drawPolygon(shape.square);
+    squaregraphics.endFill();
+
+  }
+}
+
 
 /*
  * Create squares
@@ -81,7 +117,8 @@ function squareSetUp() {
   squaregraphics = game.add.graphics(0, 0);
 
   squareSize = game.height / 6;
-  numberOfSquares = (game.width / squareSize) * 3; // (* 6) / 2 -> 3
+  squaresOnRow = game.width / squareSize;
+  numberOfSquares = (squaresOnRow) * 6; // (* 6) / 2 -> 3
 
   // Calculate the distance from the corner of the square to the center point of the square
   // Standard Pythagoras
@@ -89,20 +126,22 @@ function squareSetUp() {
 
   squareList = [];
 
-  for(var y = 0; y <= game.height; y += 2 * squareSize){ // columns
+  for(var y = 0; y <= game.height-squareSize; y += 2 * squareSize){ // columns
 
     // Rows starting with a square
-    for(var x = 0; x <= game.width; x += 2 * squareSize){ // rows
+    for(var x = 0; x <= game.width-squareSize; x += 2 * squareSize){ // rows
       squareList.push(createSquare(x, y));
     }
 
     // Rows starting with an empty space
-    for(var x = squareSize; x <= game.width; x += 2 * squareSize){ // rows
+    for(var x = squareSize; x <= game.width-squareSize; x += 2 * squareSize){ // rows
       squareList.push(createSquare(x, y + squareSize));
     }
 
     // Could return the list... //TODO REMOVE?
   }
+
+  console.log("Square list has...", squareList.length);
 
   /*
    *
