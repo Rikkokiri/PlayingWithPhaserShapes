@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Let's get one thing straight</title>
+
+  <script src="phaser.min.js"></script>
+
+  <style type="text/css">
+
+    body {
+      margin: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
+
+var gCenterX = game.width / 2;
+var gCenterY = game.height / 2;
+
+// - - - Colors - - -
+// var purple = "#750787";
+// var blue = "#004DFF";
+// var green = "#008026";
+// var yellow = "#FFED00";
+// var orange = "#FF8C00";
+// var red = "#E40303";
+
+var colors = ["#750787", "#004DFF", "#008026","#ffffff", "#ffed00", "#FF8C00", "#E40303"];
+
+/*
+ * ========== CREATE ==========
+ */
+function create() {
+
+  var letsStyle = { font: "bold 37px Arial", fill: "#ffffff", align: "center" };
+  var straightStyle = { font: "bold 80px Arial", fill: "#ffffff", align: "center" };
+
+
+  var lets = game.add.text(gCenterX, gCenterY-125, "LET'S GET ONE THING", letsStyle);
+  centerTextHorizontally(lets);
+
+  var straight = game.add.text(gCenterX, gCenterY-95, "STRAIGHT", straightStyle);
+  centerTextHorizontally(straight);
+
+  var pride = game.add.text(gCenterX, gCenterY-30, "I'M NOT", { font: "bold 106px Arial", fill: "#ffffff", align: "center" });
+  centerTextHorizontally(pride);
+
+  var colorCounter = colors.length-1;
+
+  for(var i = pride.text.length-1; i >= 0; i--){
+
+    if(pride.text.charAt(i) == " "){
+      pride.addColor("#ffffff", i);
+    }
+    else {
+      pride.addColor(colors[colorCounter], i);
+    }
+
+    colorCounter--;
+  }
+
+
+}
+
+/*
+ * ========== UPDATE ==========
+ */
+function update(){
+
+}
+
+
+// - - - - - - - CENTER TEXT - - - - - - -
+
+function centerTextHorizontally(toBeCentered){
+  toBeCentered.x = gCenterX - toBeCentered.width / 2;
+}
+
+function centerTextVertically(toBeCentered){
+  toBeCentered.y = gCenterY - toBeCentered.height / 2;
+}
+
+function centerText(toBeCentered){
+  centerTextHorizontally(toBeCentered);
+  centerTextVertically(toBeCentered);
+}
+
+</script>
+
+  <!-- <?xml version="1.0" encoding="UTF-8"?>
+  <svg xmlns="http://www.w3.org/2000/svg" width="777" height="480">
+    <rect fill="#750787" height="480" width="777"/>
+    <rect fill="#004DFF" height="400" width="777"/>
+    <rect fill="#008026" height="320" width="777"/>
+    <rect fill="#FFED00" height="240" width="777"/>
+    <rect fill="#FF8C00" height="160" width="777"/>
+    <rect fill="#E40303" height="80" width="777"/>
+  </svg> -->
+
+</body>
+</html>
