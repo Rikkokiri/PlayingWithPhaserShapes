@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css?family=Leckerli+One" rel="stylesheet">
 
   <script src="phaser.min.js"></script>
-  
+
   <style type="text/css">
 
     body {
@@ -23,19 +23,20 @@
 
 var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
 
-var coord;
 var gCenterX = game.width / 2;
 var gCenterY = game.height / 2;
-var distance = 300;
 
 var text;
 var fontsize = 0;
 var growing = true;
 
+/*
+ * ========== CREATE ==========
+ */
 function create() {
 
 
-  text = game.add.text(50, game.world.centerY, "Fuck You");
+  text = game.add.text(50, game.world.centerY, "Fuck it");
 
   // text.font = 'Arial Black';
   text.font = 'Leckerli One';
@@ -48,6 +49,9 @@ function create() {
 
 }
 
+/*
+ * ========== UPDATE ==========
+ */
 function update(){
 
   if(growing) {
