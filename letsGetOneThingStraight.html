@@ -128,6 +128,10 @@ function createPrideText(){
   var letsStyle = { font: "bold 37px Arial", fill: "#ffffff", align: "center" };
   var straightStyle = { font: "bold 80px Arial", fill: "#ffffff", align: "center" };
 
+  pride = game.add.text(gCenterX, gCenterY-30, "I'M NOT", { font: "bold 106px Arial", fill: "#fff", align: "center" });
+  centerTextHorizontally(pride);
+  pride.addColor("#000", 0);
+
   var phrase = game.add.text(gCenterX, gCenterY-125, "LET'S GET ONE THING", letsStyle);
   centerTextHorizontally(phrase);
   phrase.addColor("#000", 0);
@@ -139,11 +143,6 @@ function createPrideText(){
 
   straight = game.add.text(gCenterX, gCenterY-95, "STRAIGHT", straightStyle);
   centerTextHorizontally(straight);
-
-  pride = game.add.text(gCenterX, gCenterY-30, "I'M NOT", { font: "bold 106px Arial", fill: "#fff", align: "center" });
-  centerTextHorizontally(pride);
-
-  pride.addColor("#000", 0);
 
 }
 
