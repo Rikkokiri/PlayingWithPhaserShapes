@@ -33,38 +33,43 @@ var gCenterY = game.height / 2;
 
 var colors = ["#750787", "#004DFF", "#008026","#ffffff", "#ffed00", "#FF8C00", "#E40303"];
 
+// Text elements
+var lets;
+var get;
+var one;
+var thing;
+var straight;
+var pride;
+var textCover;
+
+var graphics;
+
+// Positions for animations
+var firstRowY;
+var letsX;
+var getY;
+var oneY;
+var thingX;
+var straightX;
+
+var waitPride = 0;
+
+var sentence;
+var active;
+
+var animationNumber;
+
 /*
  * ========== CREATE ==========
  */
 function create() {
 
-  var letsStyle = { font: "bold 37px Arial", fill: "#ffffff", align: "center" };
-  var straightStyle = { font: "bold 80px Arial", fill: "#ffffff", align: "center" };
+  graphics = game.add.graphics(0, 0);
 
+  createPrideText();
+  prepareSentence();
 
-  var lets = game.add.text(gCenterX, gCenterY-125, "LET'S GET ONE THING", letsStyle);
-  centerTextHorizontally(lets);
-
-  var straight = game.add.text(gCenterX, gCenterY-95, "STRAIGHT", straightStyle);
-  centerTextHorizontally(straight);
-
-  var pride = game.add.text(gCenterX, gCenterY-30, "I'M NOT", { font: "bold 106px Arial", fill: "#ffffff", align: "center" });
-  centerTextHorizontally(pride);
-
-  var colorCounter = colors.length-1;
-
-  for(var i = pride.text.length-1; i >= 0; i--){
-
-    if(pride.text.charAt(i) == " "){
-      pride.addColor("#ffffff", i);
-    }
-    else {
-      pride.addColor(colors[colorCounter], i);
-    }
-
-    colorCounter--;
-  }
-
+  animationNumber = 0;
 
 }
 
@@ -72,6 +77,30 @@ function create() {
  * ========== UPDATE ==========
  */
 function update(){
+
+
+  /*
+   *     Animation outline
+   * ---------------------------------
+   * 1. Bring "Let's" in from the left
+   * 2. Move "get" in it's place from the top
+   * 3. Bring "one" from the bottom
+   * 4. "thing" comes from the right
+   * 5. Bring "straight" in from...?
+   * 6. Reveal "I'm not" (blinking?)
+   */
+   //
+   if(animationNumber == 0){
+     if(sentenceAnimation(14)){
+       animationNumber = 1;
+     }
+   }
+
+   if(animationNumber == 1){
+     if(prideAnimation()){
+       animationNumber++;
+     }
+   }
 
 }
 
@@ -91,17 +120,134 @@ function centerText(toBeCentered){
   centerTextVertically(toBeCentered);
 }
 
+/*
+ * Create the text "Let's get one thing straight. I'm not".
+ */
+function createPrideText(){
+
+  var letsStyle = { font: "bold 37px Arial", fill: "#ffffff", align: "center" };
+  var straightStyle = { font: "bold 80px Arial", fill: "#ffffff", align: "center" };
+
+  var phrase = game.add.text(gCenterX, gCenterY-125, "LET'S GET ONE THING", letsStyle);
+  centerTextHorizontally(phrase);
+  phrase.addColor("#000", 0);
+
+  lets = game.add.text(phrase.x, phrase.y, "LET'S ", letsStyle);
+  get = game.add.text(lets.x + lets.width, phrase.y, "GET ", letsStyle);
+  one = game.add.text(get.x + get.width, phrase.y, "ONE ", letsStyle);
+  thing = game.add.text(one.x + one.width, phrase.y, "THING", letsStyle);
+
+  straight = game.add.text(gCenterX, gCenterY-95, "STRAIGHT", straightStyle);
+  centerTextHorizontally(straight);
+
+  pride = game.add.text(gCenterX, gCenterY-30, "I'M NOT", { font: "bold 106px Arial", fill: "#fff", align: "center" });
+  centerTextHorizontally(pride);
+
+  pride.addColor("#000", 0);
+
+}
+
+function colorPride(){
+  for(var i = pride.text.length-1; i >= 0; i--){
+    pride.addColor(colors[i], i);
+  }
+}
+
+function prepareSentence(){
+  // - - Prepare text for animation - -
+  firstRowY = lets.y;
+  letsX = lets.x;
+  getY = get.y;
+  oneY = one.y;
+  thingX = thing.x;
+  straightY = straight.y;
+
+  // Move text out of the frame
+  lets.x = 0 - lets.width;
+  get.y = 0 - get.height;
+  one.y = game.height + one.height;
+  thing.x = game.width + thing.width;
+
+  straight.y = 0 - straight.height;
+
+  active = lets;
+}
+
+function sentenceAnimation(change){
+
+  if(active == lets){
+    if(lets.x < letsX){
+      lets.x = (lets.x + change < letsX) ? lets.x += change : lets.x = letsX;
+    }
+    else if(lets.x == letsX){
+      active = get;
+      console.log("Active is now GET");
+    }
+  }
+
+  if(active == get){
+    if(get.y < getY){
+      get.y = (get.y + change < getY) ? get.y += change : get.y = getY;
+    }
+    else if(get.y == getY){
+      active = one;
+      console.log("Active is now ONE");
+    }
+  }
+
+  if(active == one){
+    if(one.y > oneY){
+      one.y = (one.y - change > oneY) ? one.y -= change : one.y = oneY;
+    }
+    else if(one.y == oneY){
+      active = thing;
+      console.log("Active is now THING");
+    }
+  }
+
+  if(active == thing){
+    if(thing.x > thingX){
+      thing.x = (thing.x - change > thingX) ? thing.x -= change : thing.x = thingX;
+    }
+    else if(thing.x == thingX){
+      active = straight;
+    }
+  }
+
+  if(active == straight){
+    if(straight.x < straightY){
+      straight.y = (straight.y + 1.2 * change < straightY) ? straight.y += 1.2 * change : straight.y = straightY;
+    }
+    if(straight.y == straightY){
+      //Animation done
+      return true;
+    }
+  }
+}
+
+
+function prideAnimation (){
+
+  if(waitPride == 40){
+    pride.addColor(colors[0], 0);
+    pride.addColor(colors[1], 1);
+    pride.addColor(colors[2], 2);
+    pride.addColor("#000", 3);
+  }
+
+  if(waitPride == 80){
+    colorPride();
+  }
+
+  if(waitPride == 120){
+    console.log("PRIDE ANIMATION DONE");
+    return true;
+  }
+
+  waitPride++;
+
+}
+
 </script>
-
-  <!-- <?xml version="1.0" encoding="UTF-8"?>
-  <svg xmlns="http://www.w3.org/2000/svg" width="777" height="480">
-    <rect fill="#750787" height="480" width="777"/>
-    <rect fill="#004DFF" height="400" width="777"/>
-    <rect fill="#008026" height="320" width="777"/>
-    <rect fill="#FFED00" height="240" width="777"/>
-    <rect fill="#FF8C00" height="160" width="777"/>
-    <rect fill="#E40303" height="80" width="777"/>
-  </svg> -->
-
 </body>
 </html>
