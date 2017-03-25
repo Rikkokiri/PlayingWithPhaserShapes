@@ -33,18 +33,32 @@ var linecoord;
 var speed = 3;
 var endPoint = game.width;
 
+var animationNumber = 0;
+
+var white;
+var whitecoord;
+var whitespeed = 10;
+
 function create() {
 
   graphics = game.add.graphics(0,0);
   background = new Phaser.Polygon(backgroundPoints);
 
-  linecoord = [new Phaser.Point(0, centerY + linewidth),
-           new Phaser.Point(0, centerY + linewidth),
-           new Phaser.Point(0, centerY),
-           new Phaser.Point(0, centerY)];
+  // Line that runs through the canvas
+  linecoord = [new Phaser.Point(0, centerY-1 + linewidth),
+           new Phaser.Point(0, centerY-1 + linewidth),
+           new Phaser.Point(0, centerY-1),
+           new Phaser.Point(0, centerY-1)];
 
   line = new Phaser.Polygon(linecoord);
 
+  // White that then expands from the line
+  whitecoord = [new Phaser.Point(0, centerY),
+                new Phaser.Point(game.width, centerY),
+                new Phaser.Point(game.width, centerY),
+                new Phaser.Point(0, centerY)];
+
+  white = new Phaser.Polygon(whitecoord);
 
 }
 
@@ -52,21 +66,66 @@ function update(){
 
   graphics.clear();
 
+  //Run line
+  if(animationNumber == 0){
+    if(runLine()){
+      animationNumber = 1;
+    }
+  }
+
+  // Expanding white
+  if(animationNumber == 1){
+    if(expandWhite()){
+
+    }
+  }
+
+  if(animationNumber == 2){
+    //???
+
+  }
+
+}
+
+/*
+ *
+ */
+function runLine(){
   if(linecoord[1].x < endPoint){
     linecoord[1].x += speed;
     linecoord[2].x += speed;
+
+    line.setTo(linecoord);
+
+    graphics.beginFill(0xffffff);
+    graphics.drawPolygon(line.points);
+    graphics.endFill();
   }
   else {
-
+    return true;
   }
+}
 
-  line.setTo(linecoord);
+/*
+ * 
+ */
+function expandWhite(){
+  //If the white hasn't reached the edges yet, keep expanding
+  if(whitecoord[0].y >= 0 && whitecoord[2].y <= game.height){
+    whitecoord[0].y -= whitespeed; //top
+    whitecoord[1].y -= whitespeed;
+    whitecoord[2].y += whitespeed; //bottom
+    whitecoord[3].y += whitespeed;
 
-  graphics.beginFill(0xffffff);
-  graphics.drawPolygon(line.points);
-  graphics.endFill();
+    white.setTo(whitecoord);
 
-
+    graphics.beginFill(0xffffff);
+    graphics.drawPolygon(white.points);
+    graphics.endFill();
+  }
+  else {
+    return true;
+  }
 }
 
 </script>
