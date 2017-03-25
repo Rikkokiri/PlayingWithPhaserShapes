@@ -76,13 +76,17 @@ function update(){
   // Expanding white
   if(animationNumber == 1){
     if(expandWhite()){
-
+      animationNumber = 2;
     }
   }
 
   if(animationNumber == 2){
     //???
+    background.setTo(backgroundPoints);
 
+    graphics.beginFill(0xffffff);
+    graphics.drawPolygon(background.points);
+    graphics.endFill();
   }
 
 }
@@ -107,7 +111,7 @@ function runLine(){
 }
 
 /*
- * 
+ *
  */
 function expandWhite(){
   //If the white hasn't reached the edges yet, keep expanding
