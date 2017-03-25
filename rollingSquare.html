@@ -32,6 +32,9 @@ var square;
 var diagonal;
 var coord;
 var rotPt;
+var goal;
+
+var rotated = 0;
 
 function create() {
 
@@ -54,16 +57,46 @@ function update(){
 
   graphics.clear();
 
+  // goal = new Phaser.Point(coord[rotPt]+squareWidth, centerY);
+
   for(var p = 0; p < coord.length; p++){
     if(p != rotPt){
       if(isDiagonal(p, rotPt)){
-        coord[p].rotate(coord[rotPt].x, coord[rotPt].y, 1.5, true, diagonal);
+        coord[p].rotate(coord[rotPt].x, coord[rotPt].y, 1, true, diagonal);
+
       }
       else {
-        coord[p].rotate(coord[rotPt].x, coord[rotPt].y, 1.5, true, squareWidth);
+        coord[p].rotate(coord[rotPt].x, coord[rotPt].y, 1, true, squareWidth);
+      }
+      if(p == nextRotationPoint(rotPt)){
+        console.log("rotP: ",coord[rotPt].y);
+        console.log("p: ", coord[p].y);
+        console.log("rotP rounded: ", Math.round(coord[rotPt].y /10.0) * 10);
+        console.log("p rounded: ", Math.round(coord[p].y/10.0) * 10);
+
+        // if(Math.round(coord[rotPt].y) == Math.round(coord[p].y)){
+        //   rotPt = p;
+        // }
+
+        if(Math.round(coord[rotPt].y / 10.0) * 10 == Math.round(coord[p].y / 10.0) * 10){
+          rotPt = p;
+        }
       }
     }
+    //
+    // if(coord[p] == goal){
+    //   rotPt = p;
+    // }
   }
+
+
+
+  if(rotated >= 270){
+    rotPt = nextRotationPoint(rotPt);
+    console.log("Next rotation point set!");
+    rotated = 0;
+  }
+
 
   square.setTo(coord);
 
