@@ -26,23 +26,24 @@ var graphics;
 
 var shades = ["#ffffff", "#f2f2f2", "#e6e6e6", "#d9d9d9", "#cccccc", "#bfbfbf", "#b3b3b3", "#a6a6a6", "#999999", "#8c8c8c", "#808080", "#737373", "#666666", "#595959", "#4d4d4d", "#404040", "#333333", "#262626", "#1a1a1a", "#0d0d0d", "#000000"];
 // var shades2 = ["#ffffff", "#e6e6e6", "#cccccc", "#b3b3b3", "#999999", "#808080", "#666666", "#4d4d4d", "#333333", "#1a1a1a", "#000000"];
-var shades2 = ["0xffffff", "0xe6e6e6", "0xcccccc", "0xb3b3b3", "0x999999", "0x808080", "0x666666", "0x4d4d4d", "0x333333", "0x1a1a1a", "0x000000"];
+// var shades2 = ["0xffffff", "0xe6e6e6", "0xcccccc", "0xb3b3b3", "0x999999", "0x808080", "0x666666", "0x4d4d4d", "0x333333", "0x1a1a1a", "0x000000"];
 // var shades2 = ["0xffffff", "0xf2f2f2", "0xe6e6e6", "0xd9d9d9", "0xcccccc", "0xbfbfbf", "0x4d4d4d", "0x404040", "0x333333", "0x262626", "0x1a1a1a", "0x0d0d0d", "0x000000"];
+// var shades2 = ["0xffffff", "0xf2f2f2", "0xe6e6e6", "0xb3b3b3", "0x999999", "0x808080", "0x4d4d4d", "0x343434", "0x333333", "0x1a1a1a", "0x000000"];
 
-var background;
-var backgroundPoints = [0, 0, game.width, 0, game.width, game.height, 0, game.height];
 
+
+
+// --- Variable for the "white to black with shading" -transition
 var layers;
-var diff = 10;
-var move = 3;
+var diff = 15;
+var move = 25;
+var doneLayers = 0;
+var shades2 = ["0xffffff", "0xfafafa", "0xf1f1f1", "0xe5e5e5", "0xd9d9d9", "0xc8c8c8", "0xb4b4b4", "0xa1a1a1", "0x8b8b8b", "0x727272", "0x5d5d5d", "0x494949", "0x383838", "0x2a2a2a", "0x1e1e1e", "0x161616", "0x151515", "0x0e0e0e", "0x000000"];
+// -----------------
 
 function create() {
 
   graphics = game.add.graphics(0,0);
-
-
-  background = new Phaser.Polygon(backgroundPoints);
-  console.log("Created", background);
 
   layers = [];
 
@@ -54,27 +55,7 @@ function create() {
              (game.width - (i * diff)), game.height,
              (0 - (i * diff)), game.height];
 
-  //  coord = [(0 - game.width - (i * diff)), 0,
-  //           (0 - (i * diff)), 0,
-  //           (0 - (i * diff)), game.height,
-  //           (0 - game.width - (i * diff)), game.height];
-
     layers[i] = new Phaser.Polygon(coord);
-  }
-
-
-  // for(var l = 0; l < shades2.length; l++){
-  // // for(var l = shades2.length-1; l > 0; l--){
-  //   graphics.beginFill(shades2[l]);
-  //   graphics.drawPolygon(layers[l].points);
-  //   graphics.endFill();
-  // }
-
-
-
-  // for(var l = layers.length-1; l >= 0; l--){
-  for(var l = 0; l < shades2.length; l++){
-    console.log(layers[l]);
   }
 
 }
@@ -83,29 +64,26 @@ function update(){
 
   graphics.clear();
 
+  whiteToBlackWithShading();
 
-  // Draw white background
-  graphics.beginFill(0xffffff);
-  graphics.drawPolygon(background.points);
-  graphics.endFill();
+}
 
+function whiteToBlackWithShading(){
   // Move the layers
   for(var l = 0; l < layers.length; l++){
 
     //If layer hasn't yet met the right edge of the canvas, move the layer
-    // if(!layers[l].contains(game.width, 0)){
+    if(!layers[l].contains((game.width+800), 0)){
 
-    var points = layers[l].toNumberArray();
-
-    for(var p = 0; p < 8; p += 2){
-      points[p] += move;
-      // layers[l].points[p].x += move;
+      layers[l].points[0].x += move;
+      layers[l].points[1].x += move;
+      layers[l].points[2].x += move;
+      layers[l].points[3].x += move;
+      layers[l].setTo(layers[l].points);
     }
-
-    layers[l].setTo(points);
-    // }
-
-
+    else {
+      doneLayers++;
+    }
   }
 
   // Draw the layers
@@ -116,6 +94,12 @@ function update(){
     graphics.endFill();
   }
 
+  if(doneLayers == layers.length){
+    return true;
+  }
+  else {
+    doneLayers = 0;
+  }
 }
 
 </script>
