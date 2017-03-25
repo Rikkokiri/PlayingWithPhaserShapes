@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Rolling Square</title>
+
+  <script src="phaser.min.js"></script>
+
+  <style type="text/css">
+
+    body {
+      margin: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
+
+var centerX = game.width / 2;
+var centerY = game.height / 2;
+var graphics;
+
+var background;
+var backgroundPoints = [0, 0, game.width, 0, game.width, game.height, 0, game.height];
+
+var line;
+var linewidth = 3;
+var linecoord;
+var speed = 3;
+var endPoint = game.width;
+
+function create() {
+
+  graphics = game.add.graphics(0,0);
+  background = new Phaser.Polygon(backgroundPoints);
+
+  linecoord = [new Phaser.Point(0, centerY + linewidth),
+           new Phaser.Point(0, centerY + linewidth),
+           new Phaser.Point(0, centerY),
+           new Phaser.Point(0, centerY)];
+
+  line = new Phaser.Polygon(linecoord);
+
+
+}
+
+function update(){
+
+  graphics.clear();
+
+  if(linecoord[1].x < endPoint){
+    linecoord[1].x += speed;
+    linecoord[2].x += speed;
+  }
+  else {
+
+  }
+
+  line.setTo(linecoord);
+
+  graphics.beginFill(0xffffff);
+  graphics.drawPolygon(line.points);
+  graphics.endFill();
+
+
+}
+
+</script>
+
+</body>
+</html>

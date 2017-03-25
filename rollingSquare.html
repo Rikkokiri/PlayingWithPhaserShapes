@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Rolling Square</title>
+
+  <script src="phaser.min.js"></script>
+
+  <style type="text/css">
+
+    body {
+      margin: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
+
+var centerX = game.width / 2;
+var centerY = game.height / 2;
+var graphics;
+
+var background;
+var backgroundPoints = [0, 0, game.width, 0, game.width, game.height, 0, game.height];
+
+var squareWidth = 50;
+var square;
+var diagonal;
+var coord;
+var rotPt;
+
+function create() {
+
+  graphics = game.add.graphics(0,0);
+  background = new Phaser.Polygon(backgroundPoints);
+
+  coord = [new Phaser.Point(100, centerY - squareWidth),
+           new Phaser.Point(100 + squareWidth, centerY - squareWidth),
+           new Phaser.Point(100 + squareWidth, centerY),
+           new Phaser.Point(100, centerY)];
+
+  square = new Phaser.Polygon(coord);
+  diagonal = Math.sqrt(squareWidth * squareWidth + squareWidth * squareWidth);
+
+  rotPt = 2;
+
+}
+
+function update(){
+
+  graphics.clear();
+
+  for(var p = 0; p < coord.length; p++){
+    if(p != rotPt){
+      if(isDiagonal(p, rotPt)){
+        coord[p].rotate(coord[rotPt].x, coord[rotPt].y, 1.5, true, diagonal);
+      }
+      else {
+        coord[p].rotate(coord[rotPt].x, coord[rotPt].y, 1.5, true, squareWidth);
+      }
+    }
+  }
+
+  square.setTo(coord);
+
+  graphics.beginFill(0xffffff);
+  graphics.drawPolygon(square.points);
+  graphics.endFill();
+
+
+}
+
+function nextRotationPoint(point){
+  if(point + 1 <= coord.length-1){
+    return (point + 1);
+  }
+  else {
+    return 0;
+  }
+}
+
+/*
+ * Check whether two corners are diagonal from each other
+ * (corner numbers 0..3, thus only sum of diagonal numbers will be even)
+ */
+function isDiagonal(corner1, corner2){
+  if((corner1 + corner2) % 2 == 0){
+    return true;
+  }
+  return false;
+}
+
+</script>
+
+</body>
+</html>
