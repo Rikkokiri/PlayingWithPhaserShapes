@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Transition</title>
+
+  <script src="phaser.min.js"></script>
+
+  <style type="text/css">
+
+    body {
+      margin: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
+
+var centerX = game.width / 2;
+var centerY = game.height / 2;
+var graphics;
+
+var lines; // Array for storing the lines
+var angle = 10;
+var numberOfLines = 360 / angle;
+var lineLength = 200;
+var lineWidth = 1;
+
+var testLine;
+
+function create() {
+
+  graphics = game.add.graphics(0,0);
+
+  //Base coordinates
+  basecoord = [new Phaser.Point(centerX, centerY),
+           new Phaser.Point(centerX, centerY - lineLength),
+           new Phaser.Point(centerX + lineWidth, centerY - lineLength),
+           new Phaser.Point(centerX + lineWidth, centerY)];
+
+
+  coord = [new Phaser.Point(centerX, centerY),
+           new Phaser.Point(centerX, centerY - lineLength),
+           new Phaser.Point(centerX + lineWidth, centerY - lineLength),
+           new Phaser.Point(centerX + lineWidth, centerY)];
+
+
+  lines = [];
+
+  for(var i = 0; i < numberOfLines; i++){
+
+    if(coord[1].y < coord[0].y){
+      // ...
+      coord[1].rotate(coord[3].x, coord[3].y, angle, true, lineLength);
+      coord[2].rotate(coord[0].x, coord[0].y, angle, true, lineLength);
+
+    } else {
+      coord[1].rotate(coord[0].x, coord[0].y, angle, true, lineLength);
+      coord[2].rotate(coord[3].x, coord[3].y, angle, true, lineLength);
+    }
+
+    lines[i] = new Phaser.Polygon(coord);
+  }
+
+  test = new Phaser.Polygon(basecoord);
+
+  // testLine = new Phaser.Line(50, 50, 700, 400);
+  // testLine = new Phaser.Polygon(50, 101, 700, 101, 700, 100, 50, 100);
+
+}
+
+function update(){
+
+  graphics.clear();
+  // graphics.moveTo(testLine.x, testLine.y);
+
+  // graphics.beginFill(0xffffff);
+  // graphics.drawPolygon(test.points);
+  // graphics.endFill();
+
+  for(var i = 0; i < numberOfLines; i++){
+
+    graphics.beginFill(0xffffff);
+    graphics.drawPolygon(lines[i].points);
+    graphics.endFill();
+
+  }
+
+}
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Transition</title>
+
+  <script src="phaser.min.js"></script>
+
+  <style type="text/css">
+
+    body {
+      margin: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update, render: render });
+
+var centerX = game.width / 2;
+var centerY = game.height / 2;
+var graphics;
+
+var lines; // Array for storing the lines
+var angle = 10;
+var numberOfLines = 360 / angle;
+var lineLength = 200;
+var lineWidth = 1;
+
+var testLine;
+
+var coord1;
+var coord2;
+var coord3;
+var coord4;
+
+
+function create() {
+
+  graphics = game.add.graphics(0,0);
+
+  //Base coordinates
+  basecoord = [new Phaser.Point(centerX, centerY),
+           new Phaser.Point(centerX, centerY - lineLength),
+           new Phaser.Point(centerX + lineWidth, centerY - lineLength),
+           new Phaser.Point(centerX + lineWidth, centerY)];
+
+
+  // First 45 degrees
+  coord1 = [new Phaser.Point(centerX, centerY),
+           new Phaser.Point(centerX, centerY - lineLength),
+           new Phaser.Point(centerX + lineWidth, centerY - lineLength),
+           new Phaser.Point(centerX + lineWidth, centerY)];
+
+  // Second 45 degrees
+  coord2 = [new Phaser.Point(centerX, centerY),
+            new Phaser.Point(centerX + lineLength, centerY),
+            new Phaser.Point(centerX + lineLength, centerY + lineWidth),
+            new Phaser.Point(centerX, centerY + lineWidth)];
+
+  // Third 45 degrees
+  coord3 = [new Phaser.Point(centerX, centerY),
+           new Phaser.Point(centerX, centerY + lineLength),
+           new Phaser.Point(centerX - lineWidth, centerY + lineLength),
+           new Phaser.Point(centerX - lineWidth, centerY)];
+
+   // Last quarter
+   coord4 = [new Phaser.Point(centerX, centerY),
+            new Phaser.Point(centerX - lineLength, centerY),
+            new Phaser.Point(centerX - lineLength, centerY - lineWidth),
+            new Phaser.Point(centerX, centerY - lineWidth)];
+
+
+  lines = [];
+
+  for(var i = 0; i < numberOfLines; i++){
+
+    if(i < numberOfLines / 4){
+      coord1[1].rotate(coord1[0].x, coord1[0].y, angle, true, lineLength);
+      coord1[2].rotate(coord1[3].x, coord1[3].y, angle, true, lineLength);
+
+      lines[i] = new Phaser.Polygon(coord1);
+    }
+    else if(i >= (numberOfLines / 4) && i < (numberOfLines / 2)){
+      coord2[1].rotate(coord2[0].x, coord2[0].y, angle, true, lineLength);
+      coord2[2].rotate(coord2[3].x, coord2[3].y, angle, true, lineLength);
+
+      lines[i] = new Phaser.Polygon(coord2);
+    }
+    else if(i >= (numberOfLines / 2) && i < (numberOfLines * (3/4))){
+      coord3[1].rotate(coord3[0].x, coord3[0].y, angle, true, lineLength);
+      coord3[2].rotate(coord3[3].x, coord3[3].y, angle, true, lineLength);
+
+      lines[i] = new Phaser.Polygon(coord3);
+    }
+    else {
+      coord4[1].rotate(coord4[0].x, coord4[0].y, angle, true, lineLength);
+      coord4[2].rotate(coord4[3].x, coord4[3].y, angle, true, lineLength);
+
+      lines[i] = new Phaser.Polygon(coord4);
+    }
+  }
+
+  test = new Phaser.Polygon(basecoord);
+
+  // testLine = new Phaser.Line(50, 50, 700, 400);
+  // testLine = new Phaser.Polygon(50, 101, 700, 101, 700, 100, 50, 100);
+
+}
+
+function update(){
+
+  graphics.clear();
+  // graphics.moveTo(testLine.x, testLine.y);
+
+  // graphics.beginFill(0xffffff);
+  // graphics.drawPolygon(test.points);
+  // graphics.endFill();
+
+  for(var i = 0; i < numberOfLines; i++){
+
+    graphics.beginFill(0xffffff);
+    graphics.drawPolygon(lines[i].points);
+    graphics.endFill();
+
+  }
+
+}
+
+function render(){
+
+
+
+}
+
+
+</script>
+
+</body>
+</html>
