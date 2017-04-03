@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Rotating square</title>
+
+  <script src="phaser.min.js"></script>
+
+  <style type="text/css">
+
+    body {
+      margin: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
+
+var squareSize;
+var numberOfSquares;
+var squaresOnRow;
+var squareList;
+
+var squareGrid;
+
+var coord;
+var squaregraphics;
+var cornerDistance;
+
+var rotationSum = 0;
+var rotationAngle = 0.75;
+
+function create() {
+
+  // Call function squareSetUp() in order to create the squares
+  squareSetUp();
+  squareGridSetUp();
+
+  //console.log("Number of squares created: " + squareList.length); // --> 36 when should be 24
+  console.log("Number of square rows created: " + squareGrid.length); // --> 36 when should be 24
+  console.log("Number of squares in a row created: " + squareGrid[0].length); // --> 36 when should be 24
+
+}
+
+function update(){
+
+  //spinSquaresSameDirection();
+  // spinSquaresTwoDirections();
+  spinSquaresSameDirection();
+
+}
+
+/*
+ * Animate the squares spinning
+ */
+function spinSquaresSameDirection() {
+
+    squaregraphics.clear();
+
+    // First rotate points for all squares
+    for(var index = 0; index < squareList.length; index++){
+
+      var square = squareList[index].square;
+      var center = squareList[index].center;
+
+      // Iterate over the points of each square
+      for(var point = 0; point < 4; point++){
+        square.points[point].rotate(center.x, center.y, rotationAngle, true, cornerDistance);
+      }
+    }
+
+    if(rotationSum < 180){
+        rotationSum += Math.abs(rotationAngle);
+        // console.log(rotationSum);
+    }
+    else {
+      rotationSum = 0;
+      rotationAngle = -1 * rotationAngle;
+      console.log("Rotation angle", rotationAngle);
+    }
+
+    // Draw squares
+    for(var index = 0; index < squareList.length; index++){
+
+      var shape = squareList[index];
+
+      squaregraphics.beginFill(0xffffff);
+      squaregraphics.drawPolygon(shape.square);
+      squaregraphics.endFill();
+
+    }
+}
+
+/*
+ * Animate the squares spinning
+ */
+function spinSquaresTwoDirections() {
+
+    squaregraphics.clear();
+
+    // First rotate points for all squares
+    for(var row = 0; row < squareGrid.length; row++) {
+      for(var index = 0; index < squareGrid[row].length; index++){
+
+        var square = squareGrid[row][index].square;
+        var center = squareGrid[row][index].center;
+
+        var angle;
+
+        if(row % 2 == 0){
+          angle = 1;
+        }
+        else {
+          angle = -1;
+        }
+
+        // Iterate over the points of each square
+        for(var point = 0; point < 4; point++){
+          square.points[point].rotate(center.x, center.y, angle, true, cornerDistance);
+        }
+      }
+    }
+
+    // Draw squares
+    for(var row = 0; row < squareGrid.length; row++) {
+      for(var index = 0; index < squareGrid[row].length; index++){
+
+        squaregraphics.beginFill(0xffffff);
+        squaregraphics.drawPolygon(squareGrid[row][index].square);
+        squaregraphics.endFill();
+
+      }
+    }
+}
+
+
+/*
+ * Create squares
+ */
+function squareSetUp() {
+
+    squaregraphics = game.add.graphics(0, 0);
+
+    squareSize = game.height / 6;
+    squaresOnRow = game.width / squareSize;
+    numberOfSquares = (squaresOnRow) * 6; // (* 6) / 2 -> 3
+
+    // Calculate the distance from the corner of the square to the center point of the square
+    // Standard Pythagoras
+    cornerDistance = Math.sqrt(2 * Math.pow((squareSize/2), 2));
+
+    squareList = [];
+
+    for(var y = 0; y <= game.height-squareSize; y += 2 * squareSize){ // columns
+
+      // Rows starting with a square
+      for(var x = 0; x <= game.width-squareSize; x += 2 * squareSize){ // rows
+        squareList.push(createSquare(x, y));
+      }
+
+      // Rows starting with an empty space
+      for(var x = squareSize; x <= game.width-squareSize; x += 2 * squareSize){ // rows
+        squareList.push(createSquare(x, y + squareSize));
+      }
+
+      // Could return the list... //TODO REMOVE?
+    }
+  }
+
+
+  /*
+   *
+   */
+  function createSquare (x, y) {
+
+    var coord =
+      [x, y, // Top left corner
+      x + squareSize, y, // top right corner
+      x + squareSize, y + squareSize, // bottom right corner
+      x, y + squareSize]; // bottom left corner
+
+    //The square needs to know it's center point so it can rotate around it
+    var centerX = x + (squareSize / 2);
+    var centerY = y + (squareSize / 2);
+
+    // var newSquare = new Phaser.Polygon(coord); TODO REMOVE
+
+    return {square: new Phaser.Polygon(coord), center: new Phaser.Point(centerX, centerY)};
+  }
+
+
+  function squareGridSetUp() {
+
+      squaregraphics = game.add.graphics(0, 0);
+
+      squareSize = game.height / 6;
+      squaresOnRow = game.width / squareSize;
+      numberOfSquares = (squaresOnRow) * 6; // (* 6) / 2 -> 3
+
+      // Calculate the distance from the corner of the square to the center point of the square
+      // Standard Pythagoras
+      cornerDistance = Math.sqrt(2 * Math.pow((squareSize/2), 2));
+
+      squareGrid = [];
+
+      for(var y = 0; y <= game.height-squareSize; y += 2 * squareSize){ // columns
+
+        squareGrid[y/squareSize] = [];
+        squareGrid[(y+squareSize)/squareSize] = [];
+
+        // Rows starting with a square
+        for(var x = 0; x <= game.width-squareSize; x += 2 * squareSize){ // rows
+          squareGrid[y/squareSize].push(createSquare(x, y));
+        }
+
+        // Rows starting with an empty space
+        for(var x = squareSize; x <= game.width-squareSize; x += 2 * squareSize){ // rows
+          squareGrid[(y+squareSize)/squareSize].push(createSquare(x, y + squareSize));
+        }
+
+        // Could return the list... //TODO REMOVE?
+      }
+    }
+
+</script>
+
+</body>
+</html>
