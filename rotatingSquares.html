@@ -33,9 +33,11 @@ var cornerDistance;
 
 function create() {
 
+  squaregraphics = game.add.graphics(0, 0);
+
   // Call function squareSetUp() in order to create the squares
   //squareSetUp();
-  squareGridSetUp();
+  squareGrid = squareGridSetUp();
 
   //console.log("Number of squares created: " + squareList.length); // --> 36 when should be 24
   console.log("Number of square rows created: " + squareGrid.length); // --> 36 when should be 24
@@ -121,7 +123,7 @@ function spinSquaresTwoDirections() {
 
       }
     }
-}
+  }
 
 
 /*
@@ -181,8 +183,6 @@ function squareSetUp() {
 
   function squareGridSetUp() {
 
-      squaregraphics = game.add.graphics(0, 0);
-
       squareSize = game.height / 6;
       squaresOnRow = game.width / squareSize;
       numberOfSquares = (squaresOnRow) * 6; // (* 6) / 2 -> 3
@@ -191,7 +191,7 @@ function squareSetUp() {
       // Standard Pythagoras
       cornerDistance = Math.sqrt(2 * Math.pow((squareSize/2), 2));
 
-      squareGrid = [];
+      var squareGrid = [];
 
       for(var y = 0; y <= game.height-squareSize; y += 2 * squareSize){ // columns
 
@@ -210,6 +210,8 @@ function squareSetUp() {
 
         // Could return the list... //TODO REMOVE?
       }
+
+      return squareGrid;
     }
 
 </script>
