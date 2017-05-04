@@ -20,7 +20,6 @@
 
 var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
 
-var squaresInColumn = 4;
 var squareSize;
 var numberOfSquares;
 var squaresOnRow;
@@ -146,9 +145,9 @@ function squareSetUp() {
 
     squaregraphics = game.add.graphics(0, 0);
 
-    squareSize = game.height / squaresInColumn;
+    squareSize = game.height / 6;
     squaresOnRow = game.width / squareSize;
-    numberOfSquares = (squaresOnRow) * squaresInColumn; // (* 6) / 2 -> 3
+    numberOfSquares = (squaresOnRow) * 6; // (* 6) / 2 -> 3
 
     // Calculate the distance from the corner of the square to the center point of the square
     // Standard Pythagoras
@@ -198,9 +197,9 @@ function squareSetUp() {
 
       squaregraphics = game.add.graphics(0, 0);
 
-      squareSize = game.height / squaresInColumn;
+      squareSize = game.height / 4;
       squaresOnRow = game.width / squareSize;
-      numberOfSquares = (squaresOnRow) * squaresInColumn; // (* 6) / 2 -> 3
+      numberOfSquares = (squaresOnRow) * 6; // (* 6) / 2 -> 3
 
       // Calculate the distance from the corner of the square to the center point of the square
       // Standard Pythagoras
