@@ -81,12 +81,7 @@ function update(){
   }
 
   if(animationNumber == 2){
-    //???
-    background.setTo(backgroundPoints);
-
-    graphics.beginFill(0xffffff);
-    graphics.drawPolygon(background.points);
-    graphics.endFill();
+    whiteBackground();
   }
 
 }
@@ -130,6 +125,14 @@ function expandWhite(){
   else {
     return true;
   }
+}
+
+function whiteBackground(){
+  background.setTo(backgroundPoints);
+
+  graphics.beginFill(0xffffff);
+  graphics.drawPolygon(background.points);
+  graphics.endFill();
 }
 
 </script>
