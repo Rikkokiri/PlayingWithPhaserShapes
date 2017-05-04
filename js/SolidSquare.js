@@ -1,7 +1,10 @@
-
+/**
+ * @author Rikkokiri
+ */
 
 /**
- * CONSTRUCTOR
+ * Creates a new solid (filled with colour) square.
+ *
  * TODO Documentation
  *
  * @param {Number} upperLeftX -

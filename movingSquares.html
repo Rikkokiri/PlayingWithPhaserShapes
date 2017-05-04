@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Transition</title>
+
+  <script src="phaser.min.js"></script>
+
+  <style type="text/css">
+
+    body {
+      margin: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- Include some functions and classes -->
+<script src="js/SolidSquare.js"></script>
+<script src="js/squareGrid.js"></script>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
+
+var centerX = game.width / 2;
+var centerY = game.height / 2;
+var graphics;
+
+// ------- For square reveal ----------
+var revealSquareGrid;
+var squaresInColumn = 6;
+var squareSize;
+var numberOfSquares;
+var squaresOnRow;
+
+var checkeredGrid;
+
+
+function create() {
+
+  graphics = game.add.graphics(0,0);
+  revealSquareGrid = createRevealSquares(game.height, game.width);
+
+}
+
+function update(){
+
+  graphics.clear();
+  drawSquareGrid(revealSquareGrid, graphics);
+  // revealSquareGrid[0][0].drawSquare(graphics);
+
+}
+
+function moveRevealSquares(){
+
+  for(){
+
+  }
+
+
+}
+
+</script>
+
+</body>
+</html>
