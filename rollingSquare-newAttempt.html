@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Rolling Square</title>
+
+  <script src="phaser.min.js"></script>
+
+  <style type="text/css">
+
+    body {
+      margin: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
+
+var centerX = game.width / 2;
+var centerY = game.height / 2;
+var graphics;
+
+var background;
+var backgroundPoints = [0, 0, game.width, 0, game.width, game.height, 0, game.height];
+
+var squareWidth = 50;
+var square;
+var diagonal;
+var coord;
+var rotPt;
+var goal;
+
+var rotated = 0;
+
+function create() {
+
+  graphics = game.add.graphics(0,0);
+
+  background = new Phaser.Polygon(backgroundPoints);
+
+  coord = [new Phaser.Point(100, centerY - squareWidth),
+           new Phaser.Point(100 + squareWidth, centerY - squareWidth),
+           new Phaser.Point(100 + squareWidth, centerY),
+           new Phaser.Point(100, centerY)];
+
+  square = new Phaser.Polygon(coord);
+  diagonal = Math.sqrt(squareWidth * squareWidth + squareWidth * squareWidth);
+
+  rotPt = 2;
+
+}
+
+function update(){
+
+  graphics.clear();
+
+  square.setTo(coord);
+
+  graphics.beginFill(0xffffff);
+  graphics.drawPolygon(square.points);
+  graphics.endFill();
+
+
+}
+
+/*
+ * Peform
+ */
+function rotateAroundPoint(rotationPoint, points){
+
+  // Check if the rotation is complete
+  if(rotated < 90){
+
+    for(var ){
+
+    }
+
+  }
+  else {
+    return true;
+  }
+
+}
+
+
+
+</script>
+
+</body>
+</html>
