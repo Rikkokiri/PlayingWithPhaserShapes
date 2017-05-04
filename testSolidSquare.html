@@ -26,19 +26,23 @@ var centerY;
 var graphics;
 
 var testSquare;
+var counter = 0;
 
 function create() {
 
   graphics = game.add.graphics(0,0);
 
-  testSquare = new SolidSquare(100, 100, 50, "0x22feee");
+  testSquare = new SolidSquare(game.width / 2 - 100, game.height/ 2 - 100, 200, "0x22feee");
 
 }
 
 function update(){
 
   graphics.clear();
-  testSquare.rotateAroundCenter(1);
+
+  // testSquare.rotateAroundCenter(0.5);
+  testSquare.moveLeft(1);
+
   testSquare.drawSquare(graphics);
 
 
