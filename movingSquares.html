@@ -37,6 +37,8 @@ var squaresOnRow;
 
 var checkeredGrid;
 
+var move = 5;
+var goal = 0;
 
 function create() {
 
@@ -48,17 +50,53 @@ function create() {
 function update(){
 
   graphics.clear();
+
+  if(goal < squareSize){
+    moveRevealSquares(game.width, game.height, squareSize, move, revealSquareGrid)
+    goal += move;
+  }
+
   drawSquareGrid(revealSquareGrid, graphics);
-  // revealSquareGrid[0][0].drawSquare(graphics);
 
 }
 
-function moveRevealSquares(){
+/**
+ * TODO Documentation
+ *
+ */
+function moveRevealSquares(canvasWidth, canvasHeight, sqrsize, move, grid){
 
-  for(){
+  // Left half
+  for(var y = 0; y <= canvasHeight - sqrsize; y += sqrsize){
+
+    for(var x = sqrsize; x <= canvasWidth / 2 - sqrsize; x += 2 * sqrsize){
+      grid[y/sqrsize][x/sqrsize].moveDown(move);
+    }
 
   }
 
+  // Right half
+
+
+}
+
+/**
+ *
+ *
+ */
+function createCheckeredHalfEmptyGrid(){
+
+  // TODO
+
+}
+
+/**
+ *
+ *
+ */
+function createCheckeredGrid(){
+
+  // TODO
 
 }
 
