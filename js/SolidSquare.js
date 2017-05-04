@@ -82,46 +82,70 @@ SolidSquare.prototype = {
 
    // TODO Rotate around corners?
 
+   rotateAroundPoint: function(point){
+
+     // TODO
+
+   },
+
+   rotateAroundCorner: function(cornerNumber){
+
+   }
 
    // ------- METHODS FOR MOVING THE SQUARE --------------
 
-   // Move up
-   moveUp: function(amount){
+   /**
+    * Move up
+    * @param {Number} distance - How many pixels the square is moved upwards
+    */
+   moveUp: function(distance){
      for(var point = 0; point < 4; point++){
-       this.square.points[point].y -= amount;
+       this.square.points[point].y -= distance;
      }
     // Update center
-    this.center.y -= amount;
+    this.center.y -= distance;
    },
 
-   // Move down
-   moveDown: function(amount){
-     this.moveUp(-amount);
+   /**
+    * Move down
+    * @param {Number} distance - How many pixels the square is moved downwards
+    */
+   moveDown: function(distance){
+     this.moveUp(-distance);
    },
 
-   // Move left
-   moveLeft: function(amount){
+   /**
+    * Move left
+    * @param {Number} distance - How many pixels the square is moved left
+    */
+   moveLeft: function(distance){
      for(var point = 0; point < 4; point++){
-       this.square.points[point].x -= amount;
+       this.square.points[point].x -= distance;
      }
      // Update center
-     this.center.x -= amount;
+     this.center.x -= distance;
    },
 
-   // Move right
-   moveRight: function(amount){
-     this.moveLeft(-amount);
+   /**
+    * Move right
+    * @param {Number} distance - How many pixels the square is moved right
+    */
+   moveRight: function(distance){
+     this.moveLeft(-distance);
    },
 
    // TODO Other directions?
-   
+
 
    // ------- Change color? --------------
 
    // TODO Check color code validity?
-
    setColor: function(newColor){
      this.color = newColor;
    }
+
+   // ------- Shrink and expand square --------------
+
+   // TODO
 
  }
