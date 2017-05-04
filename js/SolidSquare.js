@@ -4,10 +4,11 @@
  * CONSTRUCTOR
  * TODO Documentation
  *
- * @param {Number}
- * @param {Number}
- * @param {Number}
- * @param
+ * @param {Number} upperLeftX -
+ * @param {Number} upperLeftY -
+ * @param {Number} sidelength -
+ * @param {String} color -
+ *
  */
 function SolidSquare (upperLeftX, upperLeftY, sidelength, color) {
 
@@ -90,7 +91,7 @@ SolidSquare.prototype = {
 
    rotateAroundCorner: function(cornerNumber){
 
-   }
+   },
 
    // ------- METHODS FOR MOVING THE SQUARE --------------
 
@@ -136,16 +137,43 @@ SolidSquare.prototype = {
 
    // TODO Other directions?
 
+   /**
+    * Move the square so that it's center is on the given point
+    * @param {}
+    */
+    centerOn: function(point){
+
+    },
 
    // ------- Change color? --------------
 
    // TODO Check color code validity?
    setColor: function(newColor){
      this.color = newColor;
-   }
+   },
 
    // ------- Shrink and expand square --------------
 
    // TODO
+
+   /**
+    * Move the corners of the square towards its center point by the given amount
+    * and hence the square shrinks.
+    *
+    * @param {Number} amount - How much square's corners are moved towards its center point.
+    */
+   shrinkSquare: function(amount){
+
+   },
+
+   /**
+    * Move the corners of the square away from its center point by the given amount and hence
+    * the square expands.
+    *
+    * @param {Number} amount - How much square's corners are moved away from its center point.
+    */
+   expandSquare: function(amount){
+
+   }
 
  }
