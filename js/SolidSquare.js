@@ -143,6 +143,8 @@ SolidSquare.prototype = {
     */
     centerOn: function(point){
 
+      // TODO
+
     },
 
    // ------- Change color? --------------
@@ -160,10 +162,23 @@ SolidSquare.prototype = {
     * Move the corners of the square towards its center point by the given amount
     * and hence the square shrinks.
     *
+    * The shrinking stops when the lenght of the square's side drops below zero.
+    *
     * @param {Number} amount - How much square's corners are moved towards its center point.
     */
-   shrinkSquare: function(amount){
+   shrink: function(amount){
 
+       if(this.cornerDistance >= 0){
+
+         this.cornerDistance -= amount;
+
+         for( var point = 0; point < 4; point++ ){
+           this.square.points[point].rotate(this.center.x, this.center.y, 0, true, this.cornerDistance);
+         }
+
+         this.sidelength = Math.sqrt(2 * Math.pow(this.cornerDistance, 2));
+
+       }
    },
 
    /**
@@ -172,8 +187,14 @@ SolidSquare.prototype = {
     *
     * @param {Number} amount - How much square's corners are moved away from its center point.
     */
-   expandSquare: function(amount){
+   expand: function(amount){
+     this.cornerDistance += amount;
 
+     for( var point = 0; point < 4; point++ ){
+       this.square.points[point].rotate(this.center.x, this.center.y, 0, true, this.cornerDistance);
+     }
+
+     this.sidelength = Math.sqrt(2 * Math.pow(this.cornerDistance, 2));
    }
 
  }
