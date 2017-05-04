@@ -1,8 +1,20 @@
+
+
+/**
+ * CONSTRUCTOR
+ * TODO Documentation
+ *
+ * @param {Number}
+ * @param {Number}
+ * @param {Number}
+ * @param
+ */
 function SolidSquare (upperLeftX, upperLeftY, sidelength, color) {
+
   this.leftCorner = new Phaser.Point(upperLeftX, upperLeftY);
   this.sidelength = sidelength;
 
-  this.points = [new Phaser.Point(upperLeftX, upperLeftY),
+  var points = [new Phaser.Point(upperLeftX, upperLeftY),
                 new Phaser.Point(upperLeftX + sidelength, upperLeftY),
                 new Phaser.Point(upperLeftX + sidelength, upperLeftY + sidelength),
                 new Phaser.Point(upperLeftX, upperLeftY + sidelength)];
@@ -16,7 +28,8 @@ function SolidSquare (upperLeftX, upperLeftY, sidelength, color) {
 
 
   // Create the polygon
-  this.square = new Phaser.Polygon(this.points);
+  this.square = new Phaser.Polygon(points);
+
 }
 
 
@@ -65,13 +78,50 @@ SolidSquare.prototype = {
      for( var point = 0; point < 4; point++ ) {
       this.square.points[point].rotate(this.center.x, this.center.y, rotationAngle, true, this.cornerDistance);
      }
-   }
+   },
 
    // TODO Rotate around corners?
 
+
    // ------- METHODS FOR MOVING THE SQUARE --------------
 
+   // Move up
+   moveUp: function(amount){
+     for(var point = 0; point < 4; point++){
+       this.square.points[point].y -= amount;
+     }
+    // Update center
+    this.center.y -= amount;
+   },
 
+   // Move down
+   moveDown: function(amount){
+     this.moveUp(-amount);
+   },
 
+   // Move left
+   moveLeft: function(amount){
+     for(var point = 0; point < 4; point++){
+       this.square.points[point].x -= amount;
+     }
+     // Update center
+     this.center.x -= amount;
+   },
+
+   // Move right
+   moveRight: function(amount){
+     this.moveLeft(-amount);
+   },
+
+   // TODO Other directions?
+   
+
+   // ------- Change color? --------------
+
+   // TODO Check color code validity?
+
+   setColor: function(newColor){
+     this.color = newColor;
+   }
 
  }
