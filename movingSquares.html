@@ -37,13 +37,25 @@ var squaresOnRow;
 
 var checkeredGrid;
 
+var rectangleGrid; // Remove?
+
 var move = 5;
 var goal = 0;
 
 function create() {
 
+  // game.stage.backgroundColor = "#00FFFF";
+
   graphics = game.add.graphics(0,0);
-  revealSquareGrid = createRevealSquares(game.height, game.width);
+
+  // Create the squares that will be moved to reveal the 6 x 8 checkered square grid
+  revealSquareGrid = createRevealSquares(game.width, game.height, squaresInColumn);
+
+  // Create the checkered 6 x 8 square grid
+  checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0xffffff");
+
+   // Remove?
+  rectangleGrid = createRectangleGrid(game.width, game.height, squaresInColumn);
 
 }
 
@@ -56,6 +68,7 @@ function update(){
     goal += move;
   }
 
+  drawSquareGrid(checkeredGrid, graphics);
   drawSquareGrid(revealSquareGrid, graphics);
 
 }
@@ -64,19 +77,39 @@ function update(){
  * TODO Documentation
  *
  */
-function moveRevealSquares(canvasWidth, canvasHeight, sqrsize, move, grid){
+function moveRevealSquares(canvasWidth, canvasHeight, squareSize, move, grid){
 
   // Left half
-  for(var y = 0; y <= canvasHeight - sqrsize; y += sqrsize){
+  for(var y = 0; y <= canvasHeight - squareSize; y += squareSize){
 
-    for(var x = sqrsize; x <= canvasWidth / 2 - sqrsize; x += 2 * sqrsize){
-      grid[y/sqrsize][x/sqrsize].moveDown(move);
+    for(var x = 0; x <= (canvasWidth / 2) - (2 * squareSize); x += 2 * squareSize){
+
+      var row = y / squareSize;
+
+      if( ( (row % 2 == 0) && (y <= canvasHeight / 2)) || ((row % 2 != 0 ) && (y >= canvasHeight / 2))){
+        grid[ y / squareSize ][ (x + squareSize) / squareSize].moveDown(move);
+      }
+      else {
+        grid[ y / squareSize ][ x / squareSize].moveDown(move);
+      }
     }
-
   }
 
   // Right half
+  for(var y = 0; y <= canvasHeight - squareSize; y += squareSize){
 
+    for(var x = (canvasWidth / 2); x <= canvasWidth - (2 * squareSize); x += 2 * squareSize){
+
+      var row = y / squareSize;
+
+      if( ( (row % 2 == 0) && (y <= canvasHeight / 2)) || ((row % 2 != 0 ) && (y >= canvasHeight / 2))){
+        grid[ y / squareSize ][ x / squareSize].moveDown(move);
+      }
+      else {
+        grid[ y / squareSize ][ (x + squareSize) / squareSize].moveDown(move);
+      }
+    }
+  }
 
 }
 
@@ -84,10 +117,39 @@ function moveRevealSquares(canvasWidth, canvasHeight, sqrsize, move, grid){
  *
  *
  */
-function createCheckeredHalfEmptyGrid(){
+function createCheckeredHalfEmptyGrid(gameWidth, gameHeight, squaresInColumn, color){
 
-  // TODO
+    squareSize = gameHeight / squaresInColumn;
+    squaresOnRow = gameWidth / squareSize;
+    numberOfSquares = (squaresOnRow) * squaresInColumn;
 
+    var grid = [];
+
+    for(var y = 0; y <= gameHeight - squareSize; y += 2 * squareSize){ // columns
+
+      if(grid[y/squareSize] === undefined){
+        grid[y/squareSize] = [];
+      }
+
+      if(grid[(y+squareSize)/squareSize] === undefined){
+        grid[(y+squareSize)/squareSize] = [];
+      }
+
+      // Rows starting with a square
+      for(var x = 0; x <= gameWidth-squareSize; x += 2 * squareSize){ // rows
+        grid[y/squareSize].push(new SolidSquare(x, y, squareSize, color));
+      }
+
+      // Rows starting with an empty space
+      for(var x = squareSize; x <= gameWidth - squareSize; x += 2 * squareSize){ // rows
+        grid[(y+squareSize)/squareSize].push(new SolidSquare(x, y + squareSize, squareSize, color));
+      }
+
+    }
+
+    console.log(grid);
+
+    return grid;
 }
 
 /**
@@ -99,6 +161,49 @@ function createCheckeredGrid(){
   // TODO
 
 }
+
+
+
+/**
+ *  TODO NOT DONE!
+ */
+function createRectangleGrid(gameWidth, gameHeight, squaresInColumn){
+
+    squareSize = gameHeight / squaresInColumn;
+    squaresOnRow = gameWidth / squareSize;
+    numberOfSquares = (squaresOnRow) * squaresInColumn;
+
+    var grid = [];
+
+    var white = "0xffffff";
+
+    for(var y = 0; y <= gameHeight - squareSize; y += 2 * squareSize){ // columns
+
+      if(grid[y/squareSize] === undefined){
+        grid[y/squareSize] = [];
+      }
+
+      if(grid[(y+squareSize)/squareSize] === undefined){
+        grid[(y+squareSize)/squareSize] = [];
+      }
+
+      // Rows starting with a square
+      for(var x = 0; x <= gameWidth-squareSize; x += 2 * squareSize){ // rows
+        grid[y/squareSize].push(new SolidSquare(x, y, squareSize, white));
+      }
+
+      // Rows starting with an empty space
+      for(var x = squareSize; x <= gameWidth - squareSize; x += 2 * squareSize){ // rows
+        grid[(y+squareSize)/squareSize].push(new SolidSquare(x, y, squareSize, white));
+      }
+
+    }
+
+    console.log(grid);
+
+    return grid;
+}
+
 
 </script>
 

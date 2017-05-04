@@ -6,9 +6,7 @@
 function drawSquareGrid(grid, graphics){
 
   for(var row = 0; row < grid.length; row++){
-
     for(var col = 0; col < grid[row].length; col++){
-
       grid[row][col].drawSquare(graphics);
     }
   }
@@ -19,7 +17,7 @@ function drawSquareGrid(grid, graphics){
  * TODO Documentation
  *
  */
-function createRevealSquares(gameHeight, gameWidth) {
+function createRevealSquares(gameWidth, gameHeight, squaresInColumn) {
 
   squareSize = gameHeight / squaresInColumn;
   squaresOnRow = gameWidth / squareSize;
