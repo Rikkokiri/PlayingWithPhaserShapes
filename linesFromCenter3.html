@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Transition</title>
+
+  <script src="phaser.min.js"></script>
+
+  <style type="text/css">
+
+    body {
+      margin: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update, render: render });
+
+var centerX = game.width / 2;
+var centerY = game.height / 2;
+var graphics;
+
+var lines;
+var angle = 15;
+var numberOfLines = 360 / angle;
+var lineLength = 0;
+
+var baseline;
+var basecoord;
+var linecolor = 'rgb(255,255,2552)';
+
+// Used for ...
+var oddGrowing = true;
+
+function create() {
+
+  graphics = game.add.graphics(0,0);
+
+  // ------ Create lines ------
+
+  lines = [];
+
+  for(var i = 0; i < numberOfLines; i++){
+    lines[i] = new Phaser.Line(centerX, centerY, centerX, centerY - lineLength).rotateAround(centerX, centerY, i * angle, true);
+  }
+
+
+}
+
+function update(){
+
+  graphics.clear();
+
+  // Rotate the lines
+  // for(var i = 0; i < numberOfLines; i++){
+  //   lines[i].rotateAround(centerX, centerY, 1, true);
+  // }
+
+  for(var i = 0; i < numberOfLines; i++){
+
+    var newlength;
+
+    if(oddGrowing){
+
+      // If odd numbered line => line grows
+      if(i % 2 != 0){
+
+      }
+      else { // Evenly numbered line => line shrinks
+
+      }
+
+    }
+    // Even lines growing
+    else {
+      // If even numbered line => line grows
+      if(i % 2 == 0){
+
+      }
+      else { // Odd number => line shrinks
+
+      }
+
+    }
+  }
+
+  // After loop, check line lenghts to determine whether odd lines should still grow and
+  // even lines shrink
+  
+
+}
+
+function render(){
+
+  for(var i = 0; i < lines.length; i++){
+    game.debug.geom(lines[i], linecolor);
+  }
+}
+
+</script>
+
+</body>
+</html>
