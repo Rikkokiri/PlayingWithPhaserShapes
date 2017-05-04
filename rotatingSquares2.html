@@ -20,7 +20,7 @@
 
 var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
 
-var squaresInColumn = 4;
+var squaresInColumn = 6;
 var squareSize;
 var numberOfSquares;
 var squaresOnRow;
@@ -223,7 +223,6 @@ function squareSetUp() {
           squareGrid[(y+squareSize)/squareSize].push(createSquare(x, y + squareSize));
         }
 
-        // Could return the list... //TODO REMOVE?
       }
     }
 
