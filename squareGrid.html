@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Square Grid</title>
+
+  <script src="phaser.min.js"></script>
+
+</head>
+<body>
+
+<!-- Include self-created classes -->
+<script src = "shapes/SolidSquare.js"></script>
+<script src = "shape-composites/squareGrid.js"></script>
+<script src = "animation-phases/square-slide-animation.js"></script>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'animation-canvas', { create: create, update: update });
+
+var centerX = game.width / 2;
+var centerY = game.height / 2;
+var graphics;
+
+// For timing the animations
+var delayCounter = 0;
+var delayNeeded = true;
+var animationNumber = 0;
+
+var twoSquares = [];
+
+// ------- For square reveal ----------
+var revealSquareGrid;
+var squaresInColumn = 6;
+var squareSize;
+var numberOfSquares;
+var squaresOnRow;
+
+var checkeredGrid;
+var squareRevealMove = 5;
+var squareRevealGoal = 0;
+
+
+function create() {
+
+  graphics = game.add.graphics(0,0);
+
+  // Prepare background etc. for the squareslide animation
+  prepareSquareSlideAnimation(game.width, game.height);
+
+  // For square reveal
+
+  // Create the squares that will be moved to reveal the 6 x 8 checkered square grid
+  revealSquareGrid = createRevealSquares(game.width, game.height, squaresInColumn);
+
+  // Create the checkered 6 x 8 square grid
+  checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0xffffff");
+
+}
+
+function update(){
+
+  graphics.clear();
+
+
+  if(animationNumber == 0){
+
+    //When lifting the background has finished, move to the next animation
+    if(liftBackground(centerY, 20)){
+      animationNumber = 1;
+    }
+  }
+
+  //
+  if(animationNumber == 1){
+    drawPolygonShape(background, bgColor);
+    createTwoSquares(game.width/2);
+    animationNumber = 2;
+    // TODO Apply delay?
+  }
+
+  //
+  if(animationNumber == 2){
+    drawPolygonShape(background, bgColor);
+
+    if(twoSquaresSlidingFromTheRight(centerX, 10)){
+        animationNumber = 3;
+        delayCounter = 0;
+    }
+  }
+
+  if(animationNumber == 3){
+    drawPolygonShape(background, bgColor);
+    drawPolygonShape(twoSquares[0], "0x000000");
+    drawPolygonShape(twoSquares[1], "0xffffff");
+
+    delayCounter++;
+
+    if(delayCounter >= 10){
+      animationNumber = 4;
+      delayCounter = 0;
+    }
+  }
+
+  if(animationNumber == 4){
+    if(squareRevealGoal < squareSize){
+      moveRevealSquares(game.width, game.height, squareSize, squareRevealMove, revealSquareGrid)
+      squareRevealGoal += squareRevealMove;
+    }
+    else {
+      animationNumber == 5;
+    }
+
+    drawSquareGrid(checkeredGrid, graphics);
+    drawSquareGrid(revealSquareGrid, graphics);
+  }
+
+  if(animationNumber == 5){
+
+    
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
