@@ -84,8 +84,6 @@ SolidSquare.prototype = {
      }
    },
 
-   // TODO Rotate around corners?
-
    rotateAroundPoint: function(point){
 
      // TODO
@@ -93,6 +91,8 @@ SolidSquare.prototype = {
    },
 
    rotateAroundCorner: function(cornerNumber){
+
+     // TODO
 
    },
 
