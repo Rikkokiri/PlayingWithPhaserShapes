@@ -6,6 +6,14 @@
 
   <script src="phaser.min.js"></script>
 
+  <style>
+
+    body {
+      background-color: #000000;
+    }
+
+  </style>
+
 </head>
 <body>
 
@@ -17,7 +25,7 @@
 
 <script type="text/javascript">
 
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'animation-canvas', { create: create, update: update });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'animation-canvas', { preload: preload, create: create, update: update });
 
 var centerX = game.width / 2;
 var centerY = game.height / 2;
@@ -52,12 +60,31 @@ var rotationSum = 0;
 var rotationAngle = 1;
 
 /*
+ *                P R E L O A D
+ * ============================================
+ */
+ function preload() {
+
+   // TODO Firefox doesn't support mp3 files, so use ogg
+   game.load.audio('sail', 'resources/sail.mp3');
+
+ }
+
+/*
  *                C R E A T E
  * ============================================
  */
 function create() {
 
+  // Center the canvas horizontally and vertically
+  game.scale.pageAlignHorizontally = true;
+  game.scale.pageAlignVertically = true;
+
   graphics = game.add.graphics(0,0);
+
+  // Music!
+  // music = game.add.audio('sail');
+  // music.play();
 
   // Prepare background etc. for the squareslide animation
   prepareSquareSlideAnimation(game.width, game.height);
@@ -184,17 +211,25 @@ function update(){
       rotationSum += Math.abs(rotationAngle);
     }
     else {
-      checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0x000000", false);
-      game.stage.backgroundColor = 0xffffff;
-      animationNumber = 8;
+        checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0x000000", false);
+        game.stage.backgroundColor = 0xffffff;
+        rotationSum = 0;
+        animationNumber = 8;
     }
 
 
   }
 
   if(animationNumber == 8){
-    drawSquareGrid(graphics, checkeredGrid);
-    spinSquaresTwoDirections(graphics, checkeredGrid, rotationAngle);
+
+    if(rotationSum < 120){
+      spinSquaresTwoDirections(graphics, checkeredGrid, rotationAngle);
+      // spinSquaresSameDirection(graphics, checkeredGrid, rotationAngle);
+      rotationSum += Math.abs(rotationAngle);
+    }
+    else {
+      drawSquareGrid(graphics, checkeredGrid);
+    }
   }
 
 
@@ -202,8 +237,17 @@ function update(){
 }
 
 // ------- DELAY -------
+
 function delay(delayAmount){
 
+  // if(delayCounter < delayAmount){
+  //   delayCounter++
+  //   return false;
+  // }
+  // else {
+  //   delayCounter = 0;
+  //   return true;
+  // }
 }
 
 
