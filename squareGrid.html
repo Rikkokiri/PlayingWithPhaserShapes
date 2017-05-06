@@ -40,6 +40,10 @@ var checkeredGrid;
 var squareRevealMove = 5;
 var squareRevealGoal = 0;
 
+// ------- For spinning squares ----------
+// Reuse the checkeredGrid
+var rotationSum = 0;
+var rotationAngle = 1;
 
 function create() {
 
@@ -132,8 +136,24 @@ function update(){
 
   // Spin squares
   if(animationNumber == 6){
-    spinSquaresTwoDirections(graphics, checkeredGrid, 1);
+
+    if(rotationSum < 179){
+      rotationSum += Math.abs(rotationAngle);
+    }
+    else {
+      animationNumber = 7;
+    }
+
+    spinSquaresTwoDirections(graphics, checkeredGrid, rotationAngle);
+
   }
+
+
+  if(animationNumber == 7){
+    drawSquareGrid(graphics, checkeredGrid);
+  }
+
+
 
 }
 
