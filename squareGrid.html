@@ -71,7 +71,7 @@ function update(){
     }
   }
 
-  // Prepare for the next phase
+  // Create two
   if(animationNumber == 1){
     drawPolygonShape(background, bgColor);
     createTwoSquares(game.width/2);
@@ -97,7 +97,7 @@ function update(){
 
     delayCounter++;
 
-    if(delayCounter >= 10){
+    if(delayCounter >= 20){
       animationNumber = 4;
       delayCounter = 0;
     }
@@ -105,33 +105,35 @@ function update(){
 
 
   if(animationNumber == 4){
-    if(squareRevealGoal < squareSize){
+    if(squareRevealGoal <= squareSize){
       moveRevealSquares(game.width, game.height, squareSize, squareRevealMove, revealSquareGrid)
       squareRevealGoal += squareRevealMove;
-      console.log("Squaresize: ", squareSize);
     }
     else {
-      animationNumber = 5;
+      delayCounter++;
+
+      if(delayCounter >= 20){
+        animationNumber = 6; //TODO Fix
+        delayCounter = 0;
+      }
     }
 
-    drawSquareGrid(checkeredGrid, graphics);
-    drawSquareGrid(revealSquareGrid, graphics);
+    drawSquareGrid(graphics, checkeredGrid);
+    drawSquareGrid(graphics, revealSquareGrid);
   }
 
+  // TODO Pulse squares
   if(animationNumber == 5){
-    // Prepare grid for spinning animation
 
-    
+
 
   }
+
 
   // Spin squares
   if(animationNumber == 6){
-
-    // spinSquaresSameDirection(graphics, revealSquareGrid, 1);
+    spinSquaresTwoDirections(graphics, checkeredGrid, 1);
   }
-
-
 
 }
 

@@ -9,9 +9,9 @@ function drawSquareGrid(graphics, grid){
   for(var row = 0; row < grid.length; row++){
     for(var col = 0; col < grid[row].length; col++){
 
-      if(grid[row][col] !== undefined && grid[row][col] instanceof SolidSquare){
+      // if(grid[row][col] !== undefined && grid[row][col] instanceof SolidSquare){
         grid[row][col].drawSquare(graphics);
-      }
+      // }
 
     }
   }
@@ -196,7 +196,7 @@ function spinSquaresTwoDirections(graphics, grid, rotationAngle) {
           angle = -1 * rotationAngle;
         }
 
-        grid[row][col].rotateAroundCenter(angle);
+        grid[row][index].rotateAroundCenter(angle);
 
       }
     }
