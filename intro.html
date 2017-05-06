@@ -10,7 +10,7 @@
   <style>
 
     body {
-      background-color: #000000;
+      /*background-color: #000000;*/
     }
 
   </style>
@@ -27,7 +27,9 @@
 
 <script type="text/javascript">
 
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+
+// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example');
 
 var centerX = game.width / 2;
 var centerY = game.height / 2;
@@ -39,42 +41,70 @@ var testPoint1;
 var testPoint2;
 var points;
 
-function preload(){
+var music;
 
-  // TODO Firefox doesn't support mp3 files, so use ogg
-  game.load.audio('sail', 'resources/sail.mp3');
+var loadState = {
+  preload: function(){
 
-}
+    // TODO Firefox doesn't support mp3 files, so use ogg
+    game.load.audio('sail', 'resources/sail.ogg');
 
-function create() {
+  },
 
-  // Center the canvas horizontally and vertically
-  game.scale.pageAlignHorizontally = true;
-  game.scale.pageAlignVertically = true;
+  create: function(){
+    game.state.start('animation');
+  }
+};
 
-  graphics = game.add.graphics(0,0);
-
-  // Music!
-  // music = game.add.audio('sail');
-  // music.play();
-
-  introSquare = new SolidSquare(100, 100, 50, "0xffffff");
-
-  
-}
-
-function update(){
-
-  graphics.clear();
-  introSquare.centerOn(centerX, centerY);
-  introSquare.drawSquare(graphics);
+var animationState = {
 
 
-}
 
-function render() {
+  create: function() {
 
-}
+    // Center the canvas horizontally and vertically
+    game.scale.pageAlignHorizontally = true;
+    game.scale.pageAlignVertically = true;
+
+    graphics = game.add.graphics(0,0);
+
+    // Music!
+    music = game.add.audio('sail');
+    music.play();
+
+
+    introSquare = new SolidSquare(100, 100, 50, "0xffffff");
+
+
+    // game.time.events.add(Phaser.Timer.SECOND * 1.5, displaySquare, this);
+
+  },
+
+  update: function(){
+
+    graphics.clear();
+
+    if(game.time.totalElapsedSeconds() >= 1.5){
+      introSquare.drawSquare(graphics);
+    }
+    else {
+      console.log(game.time.totalElapsedSeconds());
+    }
+
+  }
+
+};
+
+
+// Add different states to the game
+game.state.add('load', loadState); // Load the resources
+// game.state.add('ready', readyState); // Show play button
+game.state.add('animation', animationState); // Play the animation
+
+// Start by calling the load state
+game.state.start('load');
+
+
 
 </script>
 

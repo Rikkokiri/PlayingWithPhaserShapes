@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Transition</title>
+
+  <script src="phaser.min.js"></script>
+
+
+  <style>
+
+    body {
+      /*background-color: #000000;*/
+    }
+
+  </style>
+
+</head>
+<body>
+
+<script src = "game.js"></script>
+
+<!-- Include self-created classes -->
+<script src = "shapes/SolidSquare.js"></script>
+<script src = "shape-composites/reveal-squares.js"></script>
+<script src = "shape-composites/squareGrid.js"></script>
+<script src = "animation-phases/square-slide-animation.js"></script>
+
+
+<script type="text/javascript">
+
+// var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example');
+
+// Add different states to the game
+game.state.add('load', loadState); // Load the resources
+// game.state.add('ready', readyState); // Show play button
+game.state.add('animation', animationState); // Play the animation
+
+// Start by calling the load state
+game.state.start('load');
+
+var loadState = {
+  preload: function(){
+
+    // TODO Firefox doesn't support mp3 files, so use ogg
+    game.load.audio('sail', 'resources/sail.ogg');
+    music = new Sound(game, 'sail', 0, false);
+
+  }
+};
+
+var centerX = game.width / 2;
+var centerY = game.height / 2;
+var graphics;
+
+var introSquare;
+var introSquare2;
+var testPoint1;
+var testPoint2;
+var points;
+
+var music;
+
+
+
+function create() {
+
+  // Center the canvas horizontally and vertically
+  game.scale.pageAlignHorizontally = true;
+  game.scale.pageAlignVertically = true;
+
+  graphics = game.add.graphics(0,0);
+
+  // Music!
+  music = game.add.audio('sail');
+  music.play();
+
+
+  introSquare = new SolidSquare(100, 100, 50, "0xffffff");
+
+
+  // game.time.events.add(Phaser.Timer.SECOND * 1.5, displaySquare, this);
+
+}
+
+function update(){
+
+  graphics.clear();
+
+  if (music.isDecoded()) {
+     console.log("Music plays now!");
+  }
+
+
+
+
+  if(game.time.totalElapsedSeconds() >= 1.5){
+    introSquare.drawSquare(graphics);
+  }
+  else {
+    console.log(game.time.totalElapsedSeconds());
+  }
+
+
+
+}
+
+function render() {
+
+}
+
+function displaySquare(){
+  introSquare.centerOn(centerX, centerY);
+  console.log("Center square");
+}
+
+</script>
+
+</body>
+</html>
