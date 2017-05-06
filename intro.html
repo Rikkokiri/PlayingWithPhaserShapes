@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Transition</title>
+
+  <script src="phaser.min.js"></script>
+
+
+  <style>
+
+    body {
+      background-color: #000000;
+    }
+
+  </style>
+
+</head>
+<body>
+
+<!-- Include self-created classes -->
+<script src = "shapes/SolidSquare.js"></script>
+<script src = "shape-composites/reveal-squares.js"></script>
+<script src = "shape-composites/squareGrid.js"></script>
+<script src = "animation-phases/square-slide-animation.js"></script>
+
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+
+var centerX = game.width / 2;
+var centerY = game.height / 2;
+var graphics;
+
+var introSquare;
+var introSquare2;
+var testPoint1;
+var testPoint2;
+var points;
+
+function preload(){
+
+  // TODO Firefox doesn't support mp3 files, so use ogg
+  game.load.audio('sail', 'resources/sail.mp3');
+
+}
+
+function create() {
+
+  // Center the canvas horizontally and vertically
+  game.scale.pageAlignHorizontally = true;
+  game.scale.pageAlignVertically = true;
+
+  graphics = game.add.graphics(0,0);
+
+  // Music!
+  // music = game.add.audio('sail');
+  // music.play();
+
+  introSquare = new SolidSquare(100, 100, 50, "0xffffff");
+
+  
+}
+
+function update(){
+
+  graphics.clear();
+  introSquare.centerOn(centerX, centerY);
+  introSquare.drawSquare(graphics);
+
+
+}
+
+function render() {
+
+}
+
+</script>
+
+</body>
+</html>

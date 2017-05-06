@@ -15,7 +15,6 @@
  */
 function SolidSquare (upperLeftX, upperLeftY, sidelength, color) {
 
-  this.leftCorner = new Phaser.Point(upperLeftX, upperLeftY);
   this.sidelength = sidelength;
 
   var points = [new Phaser.Point(upperLeftX, upperLeftY),
@@ -52,13 +51,6 @@ SolidSquare.prototype = {
   getSidelength: function(){
     return this.sidelength;
   },
-
-  /**
-   * @return {Phaser.Point} The point that is the upper left corner of the square
-   */
-   getLeftCorner: function(){
-     return this.leftCorner;
-   },
 
    /**
     * Draw the square to the given graphics
@@ -141,12 +133,23 @@ SolidSquare.prototype = {
    // TODO Other directions?
 
    /**
-    * Move the square so that it's center is on the given point
+    * Move the square so that it's center is on the given coordinates
     * @param {}
     */
-    centerOn: function(point){
+    centerOn: function(x, y){
 
-      // TODO
+      // Calculate the change in the coordinates
+      moveX = x - this.center.x;
+      moveY = y - this.center.y;
+
+      // Update the center coordinates
+      this.center.setTo(x, y);
+
+      // Update the corner coordinates
+      for( var point = 0; point < 4; point++ ){
+        this.square.points[point].x += moveX;
+        this.square.points[point].y += moveY;
+      }
 
     },
 
