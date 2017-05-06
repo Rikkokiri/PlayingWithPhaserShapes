@@ -74,7 +74,7 @@ function createRevealSquares(gameWidth, gameHeight, squaresInColumn) {
  * TODO Documentation!
  *
  */
-function createCheckeredHalfEmptyGrid(gameWidth, gameHeight, squaresInColumn, color){
+function createCheckeredHalfEmptyGrid(gameWidth, gameHeight, squaresInColumn, color, startsFromCorner){
 
     squareSize = gameHeight / squaresInColumn;
     squaresOnRow = gameWidth / squareSize;
@@ -94,12 +94,22 @@ function createCheckeredHalfEmptyGrid(gameWidth, gameHeight, squaresInColumn, co
 
       // Rows starting with a square
       for(var x = 0; x <= gameWidth-squareSize; x += 2 * squareSize){ // rows
-        grid[y/squareSize].push(new SolidSquare(x, y, squareSize, color));
+        if(startsFromCorner){
+          grid[y/squareSize].push(new SolidSquare(x, y, squareSize, color));
+        }
+        else {
+          grid[(y+squareSize)/squareSize].push(new SolidSquare(x, y + squareSize, squareSize, color));
+        }
       }
 
       // Rows starting with an empty space
       for(var x = squareSize; x <= gameWidth - squareSize; x += 2 * squareSize){ // rows
-        grid[(y+squareSize)/squareSize].push(new SolidSquare(x, y + squareSize, squareSize, color));
+        if(startsFromCorner){
+          grid[(y+squareSize)/squareSize].push(new SolidSquare(x, y + squareSize, squareSize, color));
+        }
+        else {
+          grid[y/squareSize].push(new SolidSquare(x, y, squareSize, color));
+        }
       }
 
     }

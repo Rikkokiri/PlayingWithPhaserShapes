@@ -45,6 +45,10 @@ var squareRevealGoal = 0;
 var rotationSum = 0;
 var rotationAngle = 1;
 
+/*
+ *                C R E A T E
+ * ============================================
+ */
 function create() {
 
   graphics = game.add.graphics(0,0);
@@ -58,10 +62,14 @@ function create() {
   revealSquareGrid = createRevealSquares(game.width, game.height, squaresInColumn);
 
   // Create the checkered 6 x 8 square grid
-  checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0xffffff");
+  checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0xffffff", true);
 
 }
 
+/*
+ *                U P D A T E
+ * ============================================
+ */
 function update(){
 
   graphics.clear();
@@ -137,25 +145,35 @@ function update(){
   // Spin squares
   if(animationNumber == 6){
 
+    spinSquaresTwoDirections(graphics, checkeredGrid, rotationAngle);
+
     if(rotationSum < 179){
       rotationSum += Math.abs(rotationAngle);
     }
     else {
+      checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0x000000", false);
+      game.stage.backgroundColor = 0xffffff;
       animationNumber = 7;
     }
 
-    spinSquaresTwoDirections(graphics, checkeredGrid, rotationAngle);
 
   }
 
 
   if(animationNumber == 7){
     drawSquareGrid(graphics, checkeredGrid);
+    spinSquaresTwoDirections(graphics, checkeredGrid, rotationAngle);
   }
 
 
 
 }
+
+// ------- DELAY -------
+function delay(delayAmount){
+
+}
+
 
 </script>
 
