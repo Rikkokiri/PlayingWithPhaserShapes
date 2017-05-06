@@ -2,12 +2,17 @@
  * Draw a grid of SolidSquares to given graphics
  *
  * @param {} graphics - TODO
+ * @param {} grid - TODO
  */
-function drawSquareGrid(grid, graphics){
+function drawSquareGrid(graphics, grid){
 
   for(var row = 0; row < grid.length; row++){
     for(var col = 0; col < grid[row].length; col++){
-      grid[row][col].drawSquare(graphics);
+
+      if(grid[row][col] !== undefined && grid[row][col] instanceof SolidSquare){
+        grid[row][col].drawSquare(graphics);
+      }
+
     }
   }
 }
@@ -146,3 +151,57 @@ function moveRevealSquares(canvasWidth, canvasHeight, squareSize, move, grid){
 }
 
 // ==================== SPIN SQUARES =====================
+
+/*
+ * Animate the squares spinning
+ */
+function spinSquaresSameDirection(graphics, grid, rotationAngle) {
+
+    // First rotate each square
+    for(var row = 0; row < grid.length; row++){
+      for(var col = 0; col < grid[row].length; col++){
+
+        grid[row][col].rotateAroundCenter(rotationAngle);
+
+      }
+    }
+    // if(rotationSum < 180){
+    //     rotationSum += Math.abs(rotationAngle);
+    // }
+    // else {
+    //   rotationSum = 0;
+    //   rotationAngle = -1 * rotationAngle;
+    // }
+
+    // Draw the grid
+    drawSquareGrid(graphics, grid);
+}
+
+/*
+ * TODO
+ * TODO Give option to choose whether it's even rows or odd rows that spin clockwise
+ */
+function spinSquaresTwoDirections(graphics, grid, rotationAngle) {
+
+    // First rotate each square
+    for(var row = 0; row < grid.length; row++){
+      for(var index = 0; index < grid[row].length; index++){
+
+        var angle;
+
+        if(row % 2 == 0){
+          angle = rotationAngle;
+        }
+        else {
+          angle = -1 * rotationAngle;
+        }
+
+        grid[row][col].rotateAroundCenter(angle);
+
+      }
+    }
+
+    // Draw the grid
+    drawSquareGrid(graphics, grid);
+
+}

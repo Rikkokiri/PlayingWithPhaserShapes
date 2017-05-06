@@ -62,7 +62,7 @@ function update(){
 
   graphics.clear();
 
-
+  // "Lift" the background to go from blank background to two recntangles
   if(animationNumber == 0){
 
     //When lifting the background has finished, move to the next animation
@@ -71,7 +71,7 @@ function update(){
     }
   }
 
-  //
+  // Prepare for the next phase
   if(animationNumber == 1){
     drawPolygonShape(background, bgColor);
     createTwoSquares(game.width/2);
@@ -89,6 +89,7 @@ function update(){
     }
   }
 
+  // Go from two recntangles to four recntangles
   if(animationNumber == 3){
     drawPolygonShape(background, bgColor);
     drawPolygonShape(twoSquares[0], "0x000000");
@@ -102,13 +103,15 @@ function update(){
     }
   }
 
+
   if(animationNumber == 4){
     if(squareRevealGoal < squareSize){
       moveRevealSquares(game.width, game.height, squareSize, squareRevealMove, revealSquareGrid)
       squareRevealGoal += squareRevealMove;
+      console.log("Squaresize: ", squareSize);
     }
     else {
-      animationNumber == 5;
+      animationNumber = 5;
     }
 
     drawSquareGrid(checkeredGrid, graphics);
@@ -116,10 +119,19 @@ function update(){
   }
 
   if(animationNumber == 5){
+    // Prepare grid for spinning animation
 
     
 
   }
+
+  // Spin squares
+  if(animationNumber == 6){
+
+    // spinSquaresSameDirection(graphics, revealSquareGrid, 1);
+  }
+
+
 
 }
 
