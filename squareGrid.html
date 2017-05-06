@@ -44,6 +44,7 @@ var squareRevealGoal = 0;
 // ------- For "pulsing" the squares ----------
 var pulseGoal;
 var returnGoal;
+var expanding = true;
 
 // ------- For spinning squares ----------
 // Reuse the checkeredGrid
@@ -154,37 +155,47 @@ function update(){
   // Pulse squares
   if(animationNumber == 6){
 
-    if(checkeredGrid[0][1].sidelength < pulseGoal ){
+    if(checkeredGrid[0][1].sidelength < pulseGoal && expanding){
       expandSquares(graphics, checkeredGrid, 1);
     }
+    else {
+      expanding = false;
 
+      if(checkeredGrid[0][1].sidelength > returnGoal){
+        shrinkSquares(graphics, checkeredGrid, 1);
+      }
+      else {
+        // Move on to the next animation?
+        game.stage.backgroundColor = "0x000000";
+        checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0xffffff", true);
+        animationNumber = 7;
+      }
+    }
     drawSquareGrid(graphics, checkeredGrid);
-    //checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0xffffff", false);
   }
 
-  //
-  // // Spin squares
-  // if(animationNumber == 7){
-  //
-  //   spinSquaresTwoDirections(graphics, checkeredGrid, rotationAngle);
-  //
-  //   if(rotationSum < 89){
-  //     rotationSum += Math.abs(rotationAngle);
-  //   }
-  //   else {
-  //     checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0x000000", false);
-  //     game.stage.backgroundColor = 0xffffff;
-  //     animationNumber = 8;
-  //   }
-  //
-  //
-  // }
-  //
-  //
-  // if(animationNumber == 8){
-  //   drawSquareGrid(graphics, checkeredGrid);
-  //   spinSquaresTwoDirections(graphics, checkeredGrid, rotationAngle);
-  // }
+
+  // Spin squares
+  if(animationNumber == 7){
+
+    spinSquaresTwoDirections(graphics, checkeredGrid, -1 * rotationAngle);
+
+    if(rotationSum < 179){
+      rotationSum += Math.abs(rotationAngle);
+    }
+    else {
+      checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0x000000", false);
+      game.stage.backgroundColor = 0xffffff;
+      animationNumber = 8;
+    }
+
+
+  }
+
+  if(animationNumber == 8){
+    drawSquareGrid(graphics, checkeredGrid);
+    spinSquaresTwoDirections(graphics, checkeredGrid, rotationAngle);
+  }
 
 
 
