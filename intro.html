@@ -45,20 +45,31 @@ var music;
 
 var loadState = {
   preload: function(){
-
+    this.ready = false;
     // TODO Firefox doesn't support mp3 files, so use ogg
     game.load.audio('sail', 'resources/sail.ogg');
 
   },
 
-  create: function(){
-    game.state.start('animation');
+  update: function(){
+    if(this.cache.isSoundDecoded('sail') && this.ready === false){
+      this.ready = true;
+      game.state.start('animation');
+    }
   }
 };
 
+// var readyState = {
+//
+//   create: function() {
+//
+//
+//
+//   }
+//
+// };
+
 var animationState = {
-
-
 
   create: function() {
 
@@ -84,12 +95,15 @@ var animationState = {
 
     graphics.clear();
 
-    if(game.time.totalElapsedSeconds() >= 1.5){
-      introSquare.drawSquare(graphics);
-    }
-    else {
-      console.log(game.time.totalElapsedSeconds());
-    }
+    introSquare.drawSquare(graphics);
+    // console.log(game.time.totalElapsedSeconds());
+    //
+    // if(game.time.totalElapsedSeconds() >= 1.5){
+    //   introSquare.drawSquare(graphics);
+    // }
+    // else {
+    //   console.log(game.time.totalElapsedSeconds());
+    // }
 
   }
 
