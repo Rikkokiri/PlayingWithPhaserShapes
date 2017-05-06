@@ -11,6 +11,7 @@
 
 <!-- Include self-created classes -->
 <script src = "shapes/SolidSquare.js"></script>
+<script src = "shape-composites/reveal-squares.js"></script>
 <script src = "shape-composites/squareGrid.js"></script>
 <script src = "animation-phases/square-slide-animation.js"></script>
 
@@ -39,6 +40,10 @@ var squaresOnRow;
 var checkeredGrid;
 var squareRevealMove = 5;
 var squareRevealGoal = 0;
+
+// ------- For "pulsing" the squares ----------
+var pulseGoal;
+var returnGoal;
 
 // ------- For spinning squares ----------
 // Reuse the checkeredGrid
@@ -117,7 +122,7 @@ function update(){
 
 
   if(animationNumber == 4){
-    if(squareRevealGoal <= squareSize){
+    if(squareRevealGoal < squareSize){
       moveRevealSquares(game.width, game.height, squareSize, squareRevealMove, revealSquareGrid)
       squareRevealGoal += squareRevealMove;
     }
@@ -125,7 +130,7 @@ function update(){
       delayCounter++;
 
       if(delayCounter >= 20){
-        animationNumber = 6; //TODO Fix
+        animationNumber = 5; //TODO Fix
         delayCounter = 0;
       }
     }
@@ -134,36 +139,52 @@ function update(){
     drawSquareGrid(graphics, revealSquareGrid);
   }
 
-  // TODO Pulse squares
+  // Prepare to pulse squares
   if(animationNumber == 5){
+    game.stage.backgroundColor = "0xffffff";
+    // checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0x000000", false);
+    checkeredGrid = createOverflowingCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0x000000", false, 100, 100);
+    drawSquareGrid(graphics, checkeredGrid);
 
-
-
+    pulseGoal = 1.2 * checkeredGrid[0][1].sidelength;
+    returnGoal = checkeredGrid[0][1].sidelength;
+    animationNumber = 6;
   }
 
-
-  // Spin squares
+  // Pulse squares
   if(animationNumber == 6){
 
-    spinSquaresTwoDirections(graphics, checkeredGrid, rotationAngle);
-
-    if(rotationSum < 179){
-      rotationSum += Math.abs(rotationAngle);
-    }
-    else {
-      checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0x000000", false);
-      game.stage.backgroundColor = 0xffffff;
-      animationNumber = 7;
+    if(checkeredGrid[0][1].sidelength < pulseGoal ){
+      expandSquares(graphics, checkeredGrid, 1);
     }
 
-
-  }
-
-
-  if(animationNumber == 7){
     drawSquareGrid(graphics, checkeredGrid);
-    spinSquaresTwoDirections(graphics, checkeredGrid, rotationAngle);
+    //checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0xffffff", false);
   }
+
+  //
+  // // Spin squares
+  // if(animationNumber == 7){
+  //
+  //   spinSquaresTwoDirections(graphics, checkeredGrid, rotationAngle);
+  //
+  //   if(rotationSum < 89){
+  //     rotationSum += Math.abs(rotationAngle);
+  //   }
+  //   else {
+  //     checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0x000000", false);
+  //     game.stage.backgroundColor = 0xffffff;
+  //     animationNumber = 8;
+  //   }
+  //
+  //
+  // }
+  //
+  //
+  // if(animationNumber == 8){
+  //   drawSquareGrid(graphics, checkeredGrid);
+  //   spinSquaresTwoDirections(graphics, checkeredGrid, rotationAngle);
+  // }
 
 
 
