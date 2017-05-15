@@ -57,7 +57,7 @@ SolidSquare.prototype = {
     * @param TODO
     *
     */
-   drawSquare: function(graphics) {
+   draw: function(graphics) {
 
      graphics.beginFill(this.color);
      graphics.drawPolygon(this.square);

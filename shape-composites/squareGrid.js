@@ -4,13 +4,13 @@
  * @param {} graphics - TODO
  * @param {} grid - TODO
  */
-function drawSquareGrid(graphics, grid) {
+function drawGrid(grid, graphics) {
 
   for(var row = 0; row < grid.length; row++){
     for(var col = 0; col < grid[row].length; col++){
 
-      if(grid[row][col] !== undefined && grid[row][col] instanceof SolidSquare){
-        grid[row][col].drawSquare(graphics);
+      if(grid[row][col] !== undefined){
+        grid[row][col].draw(graphics);
       }
 
     }
@@ -27,9 +27,9 @@ function drawSquareGrid(graphics, grid) {
  */
 function createFullCheckeredGrid(gameWidth, gameHeight, squaresInColumn, color1, color2){
 
-  squareSize = gameHeight / squaresInColumn;
-  squaresOnRow = gameWidth / squareSize;
-  numberOfSquares = (squaresOnRow) * squaresInColumn;
+  var squareSize = gameHeight / squaresInColumn;
+  var squaresOnRow = gameWidth / squareSize;
+  var numberOfSquares = (squaresOnRow) * squaresInColumn;
 
   var grid = [];
 
@@ -81,9 +81,9 @@ function createFullCheckeredGrid(gameWidth, gameHeight, squaresInColumn, color1,
  */
 function createCheckeredHalfEmptyGrid(gameWidth, gameHeight, squaresInColumn, color, startsFromCorner){
 
-    squareSize = gameHeight / squaresInColumn;
-    squaresOnRow = gameWidth / squareSize;
-    numberOfSquares = (squaresOnRow) * squaresInColumn;
+    var squareSize = gameHeight / squaresInColumn;
+    var squaresOnRow = gameWidth / squareSize;
+    var numberOfSquares = (squaresOnRow) * squaresInColumn;
 
     var grid = [];
 
@@ -142,9 +142,9 @@ function createCheckeredHalfEmptyGrid(gameWidth, gameHeight, squaresInColumn, co
  */
 function createOverflowingFullCheckeredGrid(gameWidth, gameHeight, squaresInColumn, color1, color2, overflowX, overflowY){
 
-  squareSize = gameHeight / squaresInColumn;
-  squaresOnRow = gameWidth / squareSize;
-  numberOfSquares = (squaresOnRow) * squaresInColumn;
+  var squareSize = gameHeight / squaresInColumn;
+  var squaresOnRow = gameWidth / squareSize;
+  var numberOfSquares = (squaresOnRow) * squaresInColumn;
 
   var grid = [];
 
@@ -195,9 +195,9 @@ function createOverflowingFullCheckeredGrid(gameWidth, gameHeight, squaresInColu
  */
 function createOverflowingCheckeredHalfEmptyGrid(gameWidth, gameHeight, squaresInColumn, color, startsFromCorner, overflowX, overflowY){
 
-    squareSize = gameHeight / squaresInColumn;
-    squaresOnRow = gameWidth / squareSize;
-    numberOfSquares = (squaresOnRow) * squaresInColumn;
+    var squareSize = gameHeight / squaresInColumn;
+    var squaresOnRow = gameWidth / squareSize;
+    var numberOfSquares = (squaresOnRow) * squaresInColumn;
 
     var grid = [];
 
@@ -255,7 +255,7 @@ function spinSquaresSameDirection(graphics, grid, rotationAngle) {
       }
     }
     // Draw the grid
-    drawSquareGrid(graphics, grid);
+    drawGrid(graphics, grid);
 }
 
 /*
@@ -283,7 +283,7 @@ function spinSquaresTwoDirections(graphics, grid, rotationAngle) {
     }
 
     // Draw the grid
-    drawSquareGrid(graphics, grid);
+    drawGrid(graphics, grid);
 }
 
 /*
@@ -298,7 +298,7 @@ function shrinkSquares(graphics, grid, amount){
    }
 
    // Draw the grid
-   drawSquareGrid(graphics, grid);
+   drawGrid(graphics, grid);
 }
 
  /*
@@ -313,5 +313,5 @@ function expandSquares(graphics, grid, amount){
     }
 
     // Draw the grid
-    drawSquareGrid(graphics, grid);
+    drawGrid(graphics, grid);
 }

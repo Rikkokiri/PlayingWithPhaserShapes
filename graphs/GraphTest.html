@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser - Graph test</title>
+
+  <script src="../phaser.min.js"></script>
+
+  <style type="text/css">
+
+    body {
+      margin: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
+
+var centerX = game.width / 2;
+var centerY = game.height / 2;
+var graphics;
+
+
+
+function create() {
+
+  graphics = game.add.graphics(0,0);
+
+  // Create a bitmap to plot the function points
+  bmd = game.add.bitmapData(game.width, game.height);
+  bmd.addToWorld();
+
+  for(var a = 1; a < 30; a += 1){
+    for(var x = -300; x < 300; x += 1){
+      var z = x + (game.width / 2);
+
+      var y = simpleGraph(a, x);
+      console.log(y);
+
+      bmd.setPixel(z, y, 255, 0, 0);
+
+    }
+  }
+
+}
+
+function update(){
+
+  // graphics.clear();
+
+}
+
+function simpleGraph(a, x) {
+  y = a * x + 2;
+
+  return y + game.height / 2;
+}
+
+</script>
+
+</body>
+</html>
