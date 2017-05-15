@@ -5,6 +5,11 @@
 	<title>Phaser - Transition</title>
 
   <script src="phaser.min.js"></script>
+  <script src = "shape-composites/squareGrid.js"></script>
+  <script src = "shape-composites/reveal-squares.js"></script>
+  <!-- Include some functions and classes -->
+  <script src = "shapes/SolidSquare.js"></script>
+
 
   <style type="text/css">
 
@@ -13,12 +18,9 @@
     }
 
   </style>
+
 </head>
 <body>
-
-<!-- Include some functions and classes -->
-<script src="js/SolidSquare.js"></script>
-<script src="js/squareGrid.js"></script>
 
 <script type="text/javascript">
 
@@ -48,13 +50,12 @@ function create() {
 
   graphics = game.add.graphics(0,0);
 
-
-
   // Create the squares that will be moved to reveal the 6 x 8 checkered square grid
   revealSquareGrid = createRevealSquares(game.width, game.height, squaresInColumn);
 
   // Create the checkered 6 x 8 square grid
-  checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0xffffff");
+  checkeredGrid = createFullCheckeredGrid(game.width, game.height, squaresInColumn, "0xffffff");
+  // checkeredGrid = createCheckeredHalfEmptyGrid(game.width, game.height, squaresInColumn, "0xffffff");
 
 }
 
@@ -63,12 +64,12 @@ function update(){
   graphics.clear();
 
   if(goal < squareSize){
-    moveRevealSquares(game.width, game.height, squareSize, move, revealSquareGrid)
+    moveRevealSquares(game.width, game.height, squareSize, move, revealSquareGrid);
     goal += move;
   }
 
-  drawSquareGrid(checkeredGrid, graphics);
-  drawSquareGrid(revealSquareGrid, graphics);
+  drawGrid(checkeredGrid, graphics);
+  drawGrid(revealSquareGrid, graphics);
 
 }
 
